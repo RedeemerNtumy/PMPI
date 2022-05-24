@@ -4,6 +4,7 @@ from PyQt6.QtGui import QColor,QFont
 from PyQt6.QtCore import Qt
 import sys
 import Home
+import time
 
 
 class ChooseWindow(QWidget,QColor):  
@@ -28,6 +29,9 @@ class ChooseWindow(QWidget,QColor):
     def serverclient(self):  
         self.serclient=ChooseWindow()                                         
         self.serclient.show()
+
+
+        
         
         
 

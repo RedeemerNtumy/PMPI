@@ -1,14 +1,16 @@
-from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QMainWindow
-from PyQt6.QtGui import QIcon,QFont,QColor
+from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout
+from PyQt6.QtGui import QFont,QColor
 from PyQt6.QtCore import Qt
 import sys
 import ServerorClient
+import time
 
 class Window(QWidget,QColor):
     def __init__(self):
         super().__init__()
         self.show()
         self.main_window()
+
 
     
     def main_window(self):
@@ -25,6 +27,9 @@ class Window(QWidget,QColor):
         self.setLayout(self.vbox)
         self.chooseWindow=ServerorClient.ChooseWindow()
         self.btn_start.clicked.connect(self.chooseWindow.serverclient)
+        self.btn_start.clicked.connect(self.hide)
+         
+        
     
 
     
