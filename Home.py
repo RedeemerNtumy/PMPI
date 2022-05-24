@@ -3,7 +3,6 @@ from PyQt6.QtGui import QFont,QColor
 from PyQt6.QtCore import Qt
 import sys
 import ServerorClient
-import time
 
 class Window(QWidget,QColor):
     def __init__(self):
