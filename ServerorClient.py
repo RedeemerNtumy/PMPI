@@ -4,7 +4,7 @@ from PyQt6.QtGui import QColor,QFont
 from PyQt6.QtCore import Qt
 import sys
 import Home
-import time
+import Server.serverinstruction1
 
 
 class ChooseWindow(QWidget,QColor):  
@@ -24,6 +24,9 @@ class ChooseWindow(QWidget,QColor):
         self.vbox.addWidget(self.server)
         self.vbox.addWidget(self.client)
         self.setLayout(self.vbox)
+        self.chooseWindow1=Server.serverinstruction1.ChooseWindow1()
+        self.server.clicked.connect(self.chooseWindow1.serverclient1)
+        self.server.clicked.connect(self.hide)
         
 
     def serverclient(self):  
