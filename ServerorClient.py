@@ -27,6 +27,7 @@ class ChooseWindow(QWidget,QColor):
         self.chooseWindow1=Server.serverinstruction1.ChooseWindow1()
         self.server.clicked.connect(self.chooseWindow1.serverclient1)
         self.server.clicked.connect(self.hide)
+        print(type(self.server.clicked))
         
 
     def serverclient(self):  

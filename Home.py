@@ -13,11 +13,11 @@ class Window(QWidget,QColor):
 
     
     def main_window(self):
-        self.label_start = QLabel("Establish an MPI cluster within a LAN with ease", self)
+        self.label_start = QLabel("Welcome to PMPI.A toolkit to help you create an MPI cluster within a LAN with ease", self)
         self.label_start.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label_start.setFont(QFont("Arial",20))
         self.vbox=QVBoxLayout()
-        self.setWindowTitle("PMPI Server")
+        self.setWindowTitle("PMPI")
         self.setGeometry(450,200,600,500)
         self.btn_start=QPushButton("Get Started",self)
         self.btn_start.setStyleSheet('background-color: green')
@@ -29,8 +29,6 @@ class Window(QWidget,QColor):
         self.btn_start.clicked.connect(self.hide)
          
         
-    
-
     
 if __name__ == "__main__":
     app = QApplication(sys.argv)
