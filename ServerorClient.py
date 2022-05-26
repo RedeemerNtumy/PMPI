@@ -5,6 +5,7 @@ from PyQt6.QtCore import Qt
 import sys
 import Home
 import Server.serverinstruction1
+import Client.clientinstruction1
 
 
 class ChooseWindow(QWidget,QColor):  
@@ -24,19 +25,16 @@ class ChooseWindow(QWidget,QColor):
         self.vbox.addWidget(self.server)
         self.vbox.addWidget(self.client)
         self.setLayout(self.vbox)
-        self.chooseWindow1=Server.serverinstruction1.ChooseWindow1()
-        self.server.clicked.connect(self.chooseWindow1.serverclient1)
+        self.chooseWindow1=Server.serverinstruction1.MainServerPage()
+        self.chooseWindow2=Client.clientinstruction1.MainClientPage()
+        self.server.clicked.connect(self.chooseWindow1.server1)
         self.server.clicked.connect(self.hide)
-        print(type(self.server.clicked))
-        
+        self.client.clicked.connect(self.chooseWindow2.client1)
+        self.client.clicked.connect(self.hide)
 
     def serverclient(self):  
         self.serclient=ChooseWindow()                                         
         self.serclient.show()
-
-
-        
-        
         
 
 

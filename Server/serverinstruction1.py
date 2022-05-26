@@ -6,11 +6,11 @@ import sys
 import ServerorClient
 
 
-class ChooseWindow1(QWidget,QColor):  
+class MainServerPage(QWidget,QColor):  
     def __init__(self):
         super().__init__()                                     
         self.setWindowTitle("Client or Server")
-        self.question = QLabel("Connect the Server and Client PC to the same network", self)
+        self.question = QLabel("You have now been connected as the server", self)
         self.question.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.question.setFont(QFont("Arial",20))
         self.setGeometry(450,200,600,500)
@@ -25,8 +25,8 @@ class ChooseWindow1(QWidget,QColor):
         self.setLayout(self.vbox)
         
 
-    def serverclient1(self):  
-        self.serclient=ChooseWindow1()                                         
+    def server1(self):  
+        self.serclient=MainServerPage()                                         
         self.serclient.show()
 
 
