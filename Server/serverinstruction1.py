@@ -26,8 +26,8 @@ class MainServerPage(QWidget,QColor):
         
 
     def server1(self):  
-        self.serclient=MainServerPage()                                         
-        self.serclient.show()
+        self.server01=MainServerPage()                                         
+        self.server01.show()
 
 
         
