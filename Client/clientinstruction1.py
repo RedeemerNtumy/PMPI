@@ -4,23 +4,21 @@ from PyQt6.QtGui import QColor,QFont
 from PyQt6.QtCore import Qt
 import sys
 import ServerorClient
+import services
 
 
 class MainClientPage(QWidget,QColor):  
     def __init__(self):
         super().__init__()                                     
-        self.setWindowTitle("Client or Server")
-        self.question = QLabel("You have now been connected as the client", self)
-        self.question.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.question.setFont(QFont("Arial",20))
+        self.setWindowTitle("Client Window")
+        self.address = QLabel(f"Client PC : {services.ip}", self)
+        self.address.setAlignment(Qt.AlignmentFlag.AlignLeading)
+        self.address.setFont(QFont("Arial",15))
         self.setGeometry(450,200,600,500)
         self.vbox=QVBoxLayout()
-        self.server=QPushButton("Server",self)
-        self.client=QPushButton("Client",self)
-        self.server.setStyleSheet('background-color: green')
-        self.client.setStyleSheet('background-color: blue')
-        self.vbox.addWidget(self.question)
-        self.vbox.addWidget(self.server)
+        self.client=QPushButton("Create a new user",self)
+        self.client.setStyleSheet('background-color: green')
+        self.vbox.addWidget(self.address)
         self.vbox.addWidget(self.client)
         self.setLayout(self.vbox)
         
