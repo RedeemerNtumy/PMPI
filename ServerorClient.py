@@ -10,7 +10,11 @@ import Client.clientinstruction1
 
 class ChooseWindow(QWidget,QColor):  
     def __init__(self):
-        super().__init__()                                     
+        super().__init__()
+        self.main_window()   
+
+
+    def main_window(self):                                  
         self.setWindowTitle("Client or Server")
         self.question = QLabel("Would you like this PC to be the Server or the Client?", self)
         self.question.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -28,9 +32,9 @@ class ChooseWindow(QWidget,QColor):
         self.chooseWindow1=Server.serverinstruction1.MainServerPage()
         self.chooseWindow2=Client.clientinstruction1.MainClientPage()
         self.server.clicked.connect(self.chooseWindow1.server1)
-        self.server.clicked.connect(self.hide)
+        self.server.clicked.connect(self.close)
         self.client.clicked.connect(self.chooseWindow2.client1)
-        self.client.clicked.connect(self.hide)
+        self.client.clicked.connect(self.close)
 
     def serverclient(self):  
         self.serclient=ChooseWindow()                                         

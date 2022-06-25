@@ -10,15 +10,14 @@ import services
 class MainClientPage(QWidget,QColor):  
     def __init__(self):
         super().__init__()                                     
-        self.setWindowTitle("Client Window")
-        self.address = QLabel(f"Client PC : {services.ip}", self)
-        self.address.setAlignment(Qt.AlignmentFlag.AlignLeading)
-        self.address.setFont(QFont("Arial",15))
+        self.setWindowTitle(f"Client PC : {services.ip}")
+      
+     
         self.setGeometry(450,200,600,500)
         self.vbox=QVBoxLayout()
         self.client=QPushButton("Create a new user",self)
         self.client.setStyleSheet('background-color: green')
-        self.vbox.addWidget(self.address)
+
         self.vbox.addWidget(self.client)
         self.setLayout(self.vbox)
         

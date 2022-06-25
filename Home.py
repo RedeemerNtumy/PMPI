@@ -26,7 +26,7 @@ class Window(QWidget,QColor):
         self.setLayout(self.vbox)
         self.chooseWindow=ServerorClient.ChooseWindow()
         self.btn_start.clicked.connect(self.chooseWindow.serverclient)
-        self.btn_start.clicked.connect(self.hide)
+        self.btn_start.clicked.connect(self.close)
          
         
     
