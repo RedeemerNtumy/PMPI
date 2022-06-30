@@ -4,6 +4,7 @@ from PyQt6.QtCore import Qt
 import sys
 import ServerorClient
 
+
 class Window(QWidget,QColor):
     def __init__(self):
         super().__init__()
@@ -13,7 +14,7 @@ class Window(QWidget,QColor):
 
     
     def main_window(self):
-        self.label_start = QLabel("Welcome to PMPI.A toolkit to help you create an MPI cluster within a LAN with ease", self)
+        self.label_start = QLabel("The Joy of PMPI, a toolkit to help you create an mpi cluster within a lan with ease.", self)
         self.label_start.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label_start.setFont(QFont("Arial",20))
         self.vbox=QVBoxLayout()
