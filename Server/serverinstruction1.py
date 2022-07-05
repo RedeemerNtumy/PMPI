@@ -6,23 +6,27 @@ import ServerorClient
 import services
 from pathlib import Path
 import os
+import cmd
 
 class MainServerPage(QWidget,QColor):  
     def __init__(self):     
-        super().__init__()                                
+        super().__init__()                        
         self.setWindowTitle(f"Server PC : {services.ip}")
         self.main_window()
         
      
       
     def main_window(self):
-        self.back=QPushButton("<<    Back",self)
+        self.back=QPushButton("Exit",self)
+        self.back.setFixedHeight(35)
         self.back.setStyleSheet('background-color: red')
 
-        self.setGeometry(450,200,600,500)
+        self.setGeometry(250,200,450,350)
 
         self.gbox=QGridLayout()
 
+        
+        
         self.new_server_user=QLineEdit()
         self.new_server_user.setFixedHeight(35)
         self.new_server_user.setPlaceholderText(" Name of new user")
@@ -47,10 +51,14 @@ class MainServerPage(QWidget,QColor):
         self.ssh_key=QComboBox()
         self.ssh_key.setFixedHeight(35)
         self.ssh_key.addItems(["Type of ssh key","RSA","DSA"])
-
+        
+        self.client_ip=QLineEdit()
+        self.client_ip.setFixedHeight(35)
+        self.client_ip.setPlaceholderText(" Client IP Address")
        
        
         self.server=QPushButton("Establish Connection",self)
+        self.server.setFixedHeight(35)
         self.server.setStyleSheet('background-color: green')
 
        
@@ -60,17 +68,22 @@ class MainServerPage(QWidget,QColor):
         self.gbox.addWidget(self.type_of_code,2,1)
         self.gbox.addWidget(self.number_of_hosts,3,0)
         self.gbox.addWidget(self.ssh_key,3,1)
-      
+        self.gbox.addWidget(self.client_ip,4,0)
         self.gbox.addWidget(self.back,5,0)
         self.gbox.addWidget(self.server,5,1)
 
         self.setLayout(self.gbox)
+    
         try:
-            self.go_back=ServerorClient.ChooseWindow()
-            self.back.clicked.connect(self.go_back.serverclient)
-            self.back.clicked.connect(self.close)
+            self.back.clicked.connect(self.buttonClicked)
         except:
             pass
+    def buttonClicked(self):
+            os.system(cmd)
+            QApplication.instance().quit()
+
+        
+        
 
     def showDialog(self):
         try:
