@@ -1,26 +1,56 @@
-from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QLabel,QComboBox,QFileDialog
-from PyQt6.QtGui import QColor,QFont
-from PyQt6.QtCore import Qt
+from logging import critical
+from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog
+from PyQt6.QtGui import QColor
 import sys
 import ServerorClient
-import services
 from pathlib import Path
 import os
 import cmd
+from PyQt6.QtWidgets import QMessageBox
+import socket   
+
+
+            
+        
 
 class MainServerPage(QWidget,QColor):  
     def __init__(self):     
-        super().__init__()                        
-        self.setWindowTitle(f"Server PC : {services.ip}")
-        self.main_window()
-        
+        super().__init__() 
+        try: 
+            ip=socket.gethostbyname(socket.getfqdn())
+        except:
+            ip="Disconnected"
+        if ip=="Disconnected":
+            self.disconnected() 
+
+        self.setWindowTitle(f"Server PC : {ip}")
+        self.main_window()          
+       
+    def disconnected(self):
+        msg=QMessageBox(self)
+        msg.setWindowTitle("Network Disconnected")
+        msg.setText("Server PC appears to be disconnected from the Client PC")
+        msg.setIcon(QMessageBox.Icon.Critical)
+        msg.setStandardButtons(QMessageBox.StandardButton.Abort)
+       
+        button=msg.exec()
+        if button==QMessageBox.StandardButton.Abort:
+            os.system(cmd)
+            QApplication.instance().quit()
+        else:
+            pass
+            
+
+   
+  
+
      
+
       
     def main_window(self):
         self.back=QPushButton("Exit",self)
         self.back.setFixedHeight(35)
         self.back.setStyleSheet('background-color: red')
-
         self.setGeometry(250,200,450,350)
 
         self.gbox=QGridLayout()
@@ -38,7 +68,7 @@ class MainServerPage(QWidget,QColor):
 
         self.choose_file=QPushButton("Choose File")
         self.choose_file.setFixedHeight(35)
-        self.choose_file.clicked.connect(self.showDialog)
+        self.choose_file.clicked.connect(self.showFileDialog)
 
         self.type_of_code=QComboBox()
         self.type_of_code.setFixedHeight(35)
@@ -78,6 +108,7 @@ class MainServerPage(QWidget,QColor):
             self.back.clicked.connect(self.buttonClicked)
         except:
             pass
+
     def buttonClicked(self):
             os.system(cmd)
             QApplication.instance().quit()
@@ -85,7 +116,7 @@ class MainServerPage(QWidget,QColor):
         
         
 
-    def showDialog(self):
+    def showFileDialog(self):
         try:
             home_dir = str(Path.home())
             mpich_file=QFileDialog.getOpenFileName(self, 'Open file', home_dir)
@@ -105,30 +136,12 @@ class MainServerPage(QWidget,QColor):
                 self.choose_file.setStyleSheet("background-color: red")       
         except:
             pass
-        # try:
-        #     if self.type_of_code.currentText()=="Type of MPI code":
-        #         pass
-        #     elif self.type_of_code.currentText()=="C++" and ".c++" not in file_name:
-        #         self.choose_file.setText("Invalid File Type")
-        #         self.choose_file.setStyleSheet("background-color: red")
-        #     elif self.type_of_code.currentText()=="C" and ".c" not in file_name:
-        #         self.choose_file.setText("Invalid File Type")
-        #         self.choose_file.setStyleSheet("background-color: red")
-        # except:
-        #     pass
-
-
-           
-
+     
     def server1(self):  
         self.server01=MainServerPage()                                         
         self.server01.show()
 
-
-        
-        
-        
-
+    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -1,22 +1,25 @@
-from ctypes import alignment
-from turtle import _Screen, Screen, screensize, width
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QVBoxLayout,QLineEdit
-from PyQt6.QtGui import QColor,QFont
-from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor
 import sys
 import os
 import cmd
-
-from numpy import spacing
+import socket
 import ServerorClient
-import services
+
 
 
 class MainClientPage(QWidget,QColor):  
     def __init__(self):
         super().__init__()     
-                               
-        self.setWindowTitle(f"Client PC : {services.ip}")
+        try: 
+            ip=socket.gethostbyname(socket.getfqdn())
+        except:
+            ip="Disconnected"
+        if ip=="Disconnected":
+            self.disconnected() 
+
+        self.setWindowTitle(f"Client PC : {ip}")
+                             
         self.main_window()
     
     def main_window(self):   
@@ -25,8 +28,7 @@ class MainClientPage(QWidget,QColor):
 
         self.new_client_user=QLineEdit()
         self.new_client_user.setFixedHeight(35)
-        # print(type(QApplication(sys.argv).primaryScreen().size().width()))
-        # self.new_client_user.setFixedWidth(app.primaryScreen().size().width())
+       
         self.new_client_user.setPlaceholderText(" Name of new user")
         
         
