@@ -1,13 +1,13 @@
 from logging import critical
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog,QLabel
-from PyQt6.QtGui import QColor,QMovie
+from PyQt6.QtGui import QColor,QMovie,QIntValidator,QDoubleValidator,QRegularExpressionValidator
 import sys
 import ServerorClient
 from pathlib import Path
 import os
 import cmd
 from PyQt6.QtWidgets import QMessageBox
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt,QRegularExpression
 import socket
 
 class loading_screen(QWidget):
@@ -95,6 +95,7 @@ class MainServerPage(QWidget,QColor):
         self.number_of_hosts=QLineEdit()
         self.number_of_hosts.setFixedHeight(35)
         self.number_of_hosts.setPlaceholderText(" Number of hosts")
+        self.number_of_hosts.setValidator(QIntValidator())
 
         self.ssh_key=QComboBox()
         self.ssh_key.setFixedHeight(35)
@@ -103,6 +104,15 @@ class MainServerPage(QWidget,QColor):
         self.client_ip=QLineEdit()
         self.client_ip.setFixedHeight(35)
         self.client_ip.setPlaceholderText(" Client IP Address")
+        ip_address="(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
+        regex_ip=QRegularExpression("^" + ip_address + "\\." + ip_address + "\\." + ip_address + "\\." + ip_address + "$")
+        ipValidator=QRegularExpressionValidator(regex_ip, self) 
+        self.client_ip.setValidator(ipValidator)
+        # self.client_ip.setValidator(QDoubleValidator(
+        #     0.0,
+        #     256.0,
+        #     12
+        # ))
        
       
         self.server=QPushButton("Establish Connection",self)
