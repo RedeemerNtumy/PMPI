@@ -72,8 +72,6 @@ class MainServerPage(QWidget,QColor):
         self.setGeometry(150,200,450,350)
 
         self.gbox=QGridLayout()
-
-        
         
         self.new_server_user=QLineEdit()
         self.new_server_user.setFixedHeight(35)
@@ -108,12 +106,6 @@ class MainServerPage(QWidget,QColor):
         regex_ip=QRegularExpression("^" + ip_address + "\\." + ip_address + "\\." + ip_address + "\\." + ip_address + "$")
         ipValidator=QRegularExpressionValidator(regex_ip, self) 
         self.client_ip.setValidator(ipValidator)
-        # self.client_ip.setValidator(QDoubleValidator(
-        #     0.0,
-        #     256.0,
-        #     12
-        # ))
-       
       
         self.server=QPushButton("Establish Connection",self)
         self.server.setFixedHeight(35)
@@ -121,10 +113,6 @@ class MainServerPage(QWidget,QColor):
         self.load=loading_screen()
         self.load.hide()
         self.server.clicked.connect(self.load.show)
-
-        
-        
-
        
         self.gbox.addWidget(self.new_server_user,1,0)
         self.gbox.addWidget(self.new_server_password,1,1)
@@ -147,9 +135,6 @@ class MainServerPage(QWidget,QColor):
     def buttonClicked(self):
             os.system(cmd)
             QApplication.instance().quit()
-
-        
-        
 
     def showFileDialog(self):
         try:
@@ -175,8 +160,6 @@ class MainServerPage(QWidget,QColor):
     def server1(self):  
         self.server01=MainServerPage()                                         
         self.server01.show()
-
-    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

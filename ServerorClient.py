@@ -12,7 +12,6 @@ class ChooseWindow(QWidget,QColor):
         super().__init__()
         self.main_window()   
 
-
     def main_window(self):                                  
         self.setWindowTitle("Client or Server")
 
@@ -32,8 +31,6 @@ class ChooseWindow(QWidget,QColor):
         self.client.setFixedHeight(50)
         self.client.setStyleSheet('background-color: blue')
 
-        
-        
         self.vbox.addWidget(self.question)
         self.vbox.addWidget(self.server)
         self.vbox.addWidget(self.client)
@@ -43,11 +40,7 @@ class ChooseWindow(QWidget,QColor):
         self.chooseWindow2=Client.clientinstruction1.MainClientPage()
         self.server.clicked.connect(self.chooseWindow1.server1)
         
-        self.client.clicked.connect(self.chooseWindow2.client1)
-       
-
-        
-           
+        self.client.clicked.connect(self.chooseWindow2.client1)           
 
     def serverclient(self):  
         self.serclient=ChooseWindow()                                         

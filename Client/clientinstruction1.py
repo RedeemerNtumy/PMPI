@@ -1,10 +1,11 @@
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QVBoxLayout,QLineEdit
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QColor,QRegularExpressionValidator
 import sys
 import os
 import cmd
 import socket
 import ServerorClient
+from PyQt6.QtCore import QRegularExpression
 
 
 
@@ -31,10 +32,6 @@ class MainClientPage(QWidget,QColor):
        
         self.new_client_user.setPlaceholderText(" Name of new user")
         
-        
-        
-        
-
         self.new_client_password=QLineEdit()
         self.new_client_password.setFixedHeight(35)
         self.new_client_password.setPlaceholderText(" Password")
@@ -43,6 +40,10 @@ class MainClientPage(QWidget,QColor):
         self.server_ip=QLineEdit()
         self.server_ip.setFixedHeight(35)
         self.server_ip.setPlaceholderText(" Server IP Address")
+        ip_address="(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
+        regex_ip=QRegularExpression("^" + ip_address + "\\." + ip_address + "\\." + ip_address + "\\." + ip_address + "$")
+        ipValidator=QRegularExpressionValidator(regex_ip, self) 
+        self.server_ip.setValidator(ipValidator)
 
         self.client=QPushButton("Begin Process",self)
         self.client.setStyleSheet('background-color: green')
@@ -71,11 +72,6 @@ class MainClientPage(QWidget,QColor):
     def client1(self):  
         self.client01=MainClientPage()                                         
         self.client01.show()
-
-
-        
-        
-        
 
 
 if __name__ == "__main__":
