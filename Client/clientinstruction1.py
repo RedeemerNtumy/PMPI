@@ -11,14 +11,14 @@ import ServerorClient
 class MainClientPage(QWidget,QColor):  
     def __init__(self):
         super().__init__()     
-        try: 
-            ip=socket.gethostbyname(socket.getfqdn())
-        except:
-            ip="Disconnected"
-        if ip=="Disconnected":
-            self.disconnected() 
+        # try: 
+        #     ip=socket.gethostbyname(socket.getfqdn())
+        # except:
+        #     ip="Disconnected"
+        # if ip=="Disconnected":
+        #     self.disconnected() 
 
-        self.setWindowTitle(f"Client PC : {ip}")
+        # self.setWindowTitle(f"Client PC : {ip}")
                              
         self.main_window()
     

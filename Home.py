@@ -40,6 +40,8 @@ class Window(QWidget,QColor):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Window()
+    with open("style.css","r") as desktop_design:
+        app.setStyleSheet(desktop_design.read())
     sys.exit(app.exec())
 
 
