@@ -23,7 +23,7 @@ class MainClientPage(QWidget,QColor):
         self.main_window()
     
     def main_window(self):   
-        self.setGeometry(650,200,450,350)
+        self.setGeometry(750,200,450,350)
         self.vbox=QVBoxLayout()
 
         self.new_client_user=QLineEdit()

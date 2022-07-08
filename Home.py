@@ -20,7 +20,7 @@ class Window(QWidget,QColor):
         self.label_start.setFont(QFont("Arial",20))
         self.vbox=QVBoxLayout()
         self.setWindowTitle("PMPI")
-        self.setGeometry(450,200,600,500)
+        self.setGeometry(350,200,600,500)
 
         self.btn_start=QPushButton("Get Started",self)
         self.btn_start.setStyleSheet('background-color: green')

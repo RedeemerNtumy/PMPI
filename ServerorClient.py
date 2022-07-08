@@ -1,4 +1,3 @@
-from ctypes import alignment
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QMainWindow
 from PyQt6.QtGui import QColor,QFont
 from PyQt6.QtCore import Qt
@@ -21,7 +20,7 @@ class ChooseWindow(QWidget,QColor):
         self.question.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.question.setFont(QFont("Arial",20))
 
-        self.setGeometry(450,200,600,500)
+        self.setGeometry(350,200,600,500)
 
         self.vbox=QVBoxLayout()
 

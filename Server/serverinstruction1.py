@@ -1,17 +1,40 @@
 from logging import critical
-from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog
-from PyQt6.QtGui import QColor
+from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog,QLabel
+from PyQt6.QtGui import QColor,QMovie
 import sys
 import ServerorClient
 from pathlib import Path
 import os
 import cmd
 from PyQt6.QtWidgets import QMessageBox
-import socket   
+from PyQt6.QtCore import Qt
+import socket
 
-
-            
+class loading_screen(QWidget):
+    def __init__(self):     
+        super().__init__() 
+        self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint| Qt.WindowType.CustomizeWindowHint |Qt.WindowType.FramelessWindowHint)  
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground)
+        self.setWindowFlag(Qt.WindowType.WindowCloseButtonHint, False)  
+        self.label_animate=QLabel(self)
+        self.movie=QMovie('images/load_small.gif')
+        self.label_animate.setMovie(self.movie)
+        self.setFixedSize(50,50)
+        self.setGeometry(625,420,450,350)
+        self.start_animation()
         
+
+        self.show()
+
+    def start_animation(self):
+        self.movie.start()
+    
+    def stop_animation(self):
+        self.movie.stop()
+        self.close()
+
+    
 
 class MainServerPage(QWidget,QColor):  
     def __init__(self):     
@@ -24,7 +47,8 @@ class MainServerPage(QWidget,QColor):
             self.disconnected() 
 
         self.setWindowTitle(f"Server PC : {ip}")
-        self.main_window()          
+        self.main_window()     
+           
        
     def disconnected(self):
         msg=QMessageBox(self)
@@ -39,19 +63,13 @@ class MainServerPage(QWidget,QColor):
             QApplication.instance().quit()
         else:
             pass
-            
-
-   
-  
-
-     
 
       
     def main_window(self):
         self.back=QPushButton("Exit",self)
         self.back.setFixedHeight(35)
         self.back.setStyleSheet('background-color: red')
-        self.setGeometry(250,200,450,350)
+        self.setGeometry(150,200,450,350)
 
         self.gbox=QGridLayout()
 
@@ -86,10 +104,16 @@ class MainServerPage(QWidget,QColor):
         self.client_ip.setFixedHeight(35)
         self.client_ip.setPlaceholderText(" Client IP Address")
        
-       
+      
         self.server=QPushButton("Establish Connection",self)
         self.server.setFixedHeight(35)
         self.server.setStyleSheet('background-color: green')
+        self.load=loading_screen()
+        self.load.hide()
+        self.server.clicked.connect(self.load.show)
+
+        
+        
 
        
         self.gbox.addWidget(self.new_server_user,1,0)
@@ -101,6 +125,7 @@ class MainServerPage(QWidget,QColor):
         self.gbox.addWidget(self.client_ip,4,0)
         self.gbox.addWidget(self.back,5,0)
         self.gbox.addWidget(self.server,5,1)
+
 
         self.setLayout(self.gbox)
     
