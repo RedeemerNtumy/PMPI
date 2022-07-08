@@ -14,8 +14,10 @@ class ChooseWindow(QWidget,QColor):
 
     def main_window(self):                                  
         self.setWindowTitle("Client or Server")
+        self.setProperty("class","server_or_client_screen")
 
         self.question = QLabel("Would you like this PC to be the Server or the Client?", self)
+        self.question.setProperty("class","server_or_client")
         self.question.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.question.setFont(QFont("Arial",20))
 
@@ -25,11 +27,12 @@ class ChooseWindow(QWidget,QColor):
 
         self.server=QPushButton("Server",self)
         self.server.setFixedHeight(50)
-        self.server.setStyleSheet('background-color: green')
+        self.server.setProperty("class","server_button")
+       
 
         self.client=QPushButton("Client",self)
         self.client.setFixedHeight(50)
-        self.client.setStyleSheet('background-color: blue')
+        self.client.setProperty("class","client_button")
 
         self.vbox.addWidget(self.question)
         self.vbox.addWidget(self.server)

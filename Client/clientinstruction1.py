@@ -53,7 +53,6 @@ class MainClientPage(QWidget,QColor):
         self.back.setStyleSheet('background-color: red')
         self.back.setFixedHeight(50)
         
-
         self.vbox.addWidget(self.new_client_user)
         self.vbox.addWidget(self.new_client_password)
         self.vbox.addWidget(self.server_ip)

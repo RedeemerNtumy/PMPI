@@ -1,6 +1,6 @@
 from logging import critical
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog,QLabel
-from PyQt6.QtGui import QColor,QMovie,QIntValidator,QDoubleValidator,QRegularExpressionValidator
+from PyQt6.QtGui import QColor,QMovie,QIntValidator,QRegularExpressionValidator
 import sys
 import ServerorClient
 from pathlib import Path
@@ -30,9 +30,6 @@ class loading_screen(QWidget):
     def start_animation(self):
         self.movie.start()
     
-    def stop_animation(self):
-        self.movie.stop()
-        self.close()
 
     
 
@@ -151,11 +148,22 @@ class MainServerPage(QWidget,QColor):
                 self.type_of_code.setCurrentText("C")
                 self.choose_file.setStyleSheet("background-color: green")
             else:
-                self.choose_file.setText("Invalid File Type")
-                print(type(self.type_of_code.currentText()))
-                self.choose_file.setStyleSheet("background-color: red")       
+                self.choose_file.setText("Choose File")
+                self.invalid_file()
+                pass 
+
+         
         except:
             pass
+        
+    def invalid_file(self):
+        msg=QMessageBox(self)
+        msg.setWindowTitle("Invalid File")
+        msg.setText("The file you chose has an invalid file format")
+        msg.setIcon(QMessageBox.Icon.Warning)
+        msg.setStandardButtons(QMessageBox.StandardButton.Retry)
+        msg.exec()
+       
      
     def server1(self):  
         self.server01=MainServerPage()                                         

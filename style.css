@@ -1,0 +1,18 @@
+.server_button{
+    background-color: green;
+    border-radius: 20px;
+    margin-bottom: 5;
+   
+}
+.client_button{
+    background-color: rgb(31, 71, 232);
+    border-radius: 20px;
+    margin-top: 5;
+    
+}
+.server_or_client_screen{
+    background-color: white;
+}
+.server_or_client{
+    color: black;
+}
