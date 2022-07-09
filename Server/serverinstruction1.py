@@ -19,12 +19,11 @@ class loading_screen(QWidget):
         self.setWindowFlag(Qt.WindowType.WindowCloseButtonHint, False)  
         self.label_animate=QLabel(self)
         self.movie=QMovie('images/load_small.gif')
+        self.movie.setProperty("class","loader")
         self.label_animate.setMovie(self.movie)
         self.setFixedSize(50,50)
         self.setGeometry(625,420,450,350)
         self.start_animation()
-        
-
         self.show()
 
     def start_animation(self):
@@ -107,9 +106,10 @@ class MainServerPage(QWidget,QColor):
         self.server=QPushButton("Establish Connection",self)
         self.server.setFixedHeight(35)
         self.server.setStyleSheet('background-color: green')
+        self.server.clicked.connect(self.proceed)
         self.load=loading_screen()
         self.load.hide()
-        self.server.clicked.connect(self.load.show)
+        
        
         self.gbox.addWidget(self.new_server_user,1,0)
         self.gbox.addWidget(self.new_server_password,1,1)
@@ -133,7 +133,9 @@ class MainServerPage(QWidget,QColor):
             os.system(cmd)
             QApplication.instance().quit()
 
+    fileName="Choose File"
     def showFileDialog(self):
+        global fileName
         try:
             home_dir = str(Path.home())
             mpich_file=QFileDialog.getOpenFileName(self, 'Open file', home_dir)
@@ -151,11 +153,13 @@ class MainServerPage(QWidget,QColor):
                 self.choose_file.setText("Choose File")
                 self.invalid_file()
                 pass 
-
-         
+            
         except:
-            pass
-        
+            fileName=file_name
+        fileName=file_name
+       
+   
+
     def invalid_file(self):
         msg=QMessageBox(self)
         msg.setWindowTitle("Invalid File")
@@ -163,7 +167,60 @@ class MainServerPage(QWidget,QColor):
         msg.setIcon(QMessageBox.Icon.Warning)
         msg.setStandardButtons(QMessageBox.StandardButton.Retry)
         msg.exec()
-       
+    
+    def proceed(self):
+        global fileName
+
+        def report(self,text):
+            report=QMessageBox(self)
+            report.setWindowTitle("Incomplete Details")
+            report.setText(f"{text}")
+            report.setIcon(QMessageBox.Icon.Critical)
+            report.setStandardButtons(QMessageBox.StandardButton.Ok)
+            report.exec()
+
+        if len(self.new_server_user.text())==0:
+            report(self,text="Name of new user is empy")
+
+        elif len(self.new_server_password.text())==0:
+            report(self,text="Please input as password")
+
+        elif self.type_of_code.currentText()=="Type of MPI Code":
+            report(self,text="Please choose the type of MPI Code")
+
+        elif self.ssh_key.currentText()=="Type of ssh key":
+            report(self,text="Please specify ssh key")
+
+        elif len(self.number_of_hosts.text())==0:
+            report(self,text="Please input number of hosts")
+
+        elif len(self.client_ip.text())==0:
+            report(self,text="Please input Client IP Address")
+
+        elif self.client_ip.text().count(".") < 3:
+            report(self,text="Incomplete Client IP Address")
+        else:
+            try:
+                msg=QMessageBox(self)
+                msg.setWindowTitle("Review Details")
+                msg.setText("These details will be used to create the MPI cluster. Proceed?")
+                msg.setInformativeText(f"Name of user : {self.new_server_user.text()}\nChosen file : {fileName}\nType of MPI Code : {self.type_of_code.currentText()}\nType of ssh key : {self.ssh_key.currentText()}\nNumber of hosts : {self.number_of_hosts.text()}\nClient IP Address : {self.client_ip.text()}")
+    
+                msg.setIcon(QMessageBox.Icon.Information)
+                msg.setStandardButtons(QMessageBox.StandardButton.No|QMessageBox.StandardButton.Yes)
+                button=msg.exec()
+                if button==QMessageBox.StandardButton.Yes:
+                    self.load.show()
+                elif button==QMessageBox.StandardButton.No:
+                    self.load.hide()
+
+            except:
+                incomplete=QMessageBox(self)
+                incomplete.setWindowTitle("Incomplete Details")
+                incomplete.setText("File not uploaded")
+                incomplete.setIcon(QMessageBox.Icon.Critical)
+                incomplete.setStandardButtons(QMessageBox.StandardButton.Ok)
+                incomplete.exec()   
      
     def server1(self):  
         self.server01=MainServerPage()                                         

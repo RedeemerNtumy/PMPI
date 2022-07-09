@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QMainWindow
+from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout
 from PyQt6.QtGui import QColor,QFont
 from PyQt6.QtCore import Qt
 import sys
@@ -14,10 +14,10 @@ class ChooseWindow(QWidget,QColor):
 
     def main_window(self):                                  
         self.setWindowTitle("Client or Server")
-        self.setProperty("class","server_or_client_screen")
+        self.setProperty("class","main")
 
         self.question = QLabel("Would you like this PC to be the Server or the Client?", self)
-        self.question.setProperty("class","server_or_client")
+        self.question.setProperty("class","label")
         self.question.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.question.setFont(QFont("Arial",20))
 
@@ -37,12 +37,13 @@ class ChooseWindow(QWidget,QColor):
         self.vbox.addWidget(self.question)
         self.vbox.addWidget(self.server)
         self.vbox.addWidget(self.client)
+        
         self.setLayout(self.vbox)
 
         self.chooseWindow1=Server.serverinstruction1.MainServerPage()
         self.chooseWindow2=Client.clientinstruction1.MainClientPage()
+
         self.server.clicked.connect(self.chooseWindow1.server1)
-        
         self.client.clicked.connect(self.chooseWindow2.client1)           
 
     def serverclient(self):  

@@ -10,9 +10,16 @@
     margin-top: 5;
     
 }
-.server_or_client_screen{
+.main{
     background-color: white;
+    
 }
-.server_or_client{
+.label{
     color: black;
+}
+.get_started{
+    background-color: green;
+    border-radius: 20px;
+    margin-bottom: 5;
+    
 }

@@ -18,12 +18,16 @@ class Window(QWidget,QColor):
         self.label_start = QLabel("The Joy of PMPI, a toolkit to help you create an mpi cluster within a lan with ease.", self)
         self.label_start.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label_start.setFont(QFont("Arial",20))
+        self.label_start.setProperty("class","label")
+
+        self.setProperty("class","main")
+
         self.vbox=QVBoxLayout()
         self.setWindowTitle("PMPI")
         self.setGeometry(350,200,600,500)
 
         self.btn_start=QPushButton("Get Started",self)
-        self.btn_start.setStyleSheet('background-color: green')
+        self.btn_start.setProperty("class","get_started")
         self.btn_start.setFixedHeight(50)
         
         self.vbox.addWidget(self.label_start)
