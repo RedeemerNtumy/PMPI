@@ -28,21 +28,18 @@ class loading_screen(QWidget):
 
     def start_animation(self):
         self.movie.start()
-    
-
-    
 
 class MainServerPage(QWidget,QColor):  
     def __init__(self):     
         super().__init__() 
-        # try: 
-        #     ip=socket.gethostbyname(socket.getfqdn())
-        # except:
-        #     ip="Disconnected"
-        # if ip=="Disconnected":
-        #     self.disconnected() 
+        try: 
+            ip=socket.gethostbyname(socket.getfqdn())
+        except:
+            ip="Disconnected"
+        if ip=="Disconnected":
+            self.disconnected() 
 
-        # self.setWindowTitle(f"Server PC : {ip}")
+        self.setWindowTitle(f"Server PC : {ip}")
         self.main_window()     
            
        
