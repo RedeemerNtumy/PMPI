@@ -6,6 +6,7 @@ import cmd
 import socket
 import ServerorClient
 from PyQt6.QtCore import QRegularExpression
+from PyQt6.QtWidgets import QMessageBox
 
 
 
@@ -48,6 +49,7 @@ class MainClientPage(QWidget,QColor):
         self.client=QPushButton("Begin Process",self)
         self.client.setStyleSheet('background-color: green')
         self.client.setFixedHeight(50)
+        self.client.clicked.connect(self.proceed)
 
         self.back=QPushButton("Exit",self)
         self.back.setStyleSheet('background-color: red')
@@ -67,6 +69,41 @@ class MainClientPage(QWidget,QColor):
     def buttonClicked(self):
             os.system(cmd)
             QApplication.instance().quit()
+    def proceed(self):
+        global fileName
+
+        def report(self,text):
+            report=QMessageBox(self)
+            report.setWindowTitle("Incomplete Details")
+            report.setText(f"{text}")
+            report.setIcon(QMessageBox.Icon.Critical)
+            report.setStandardButtons(QMessageBox.StandardButton.Ok)
+            report.exec()
+
+        if len(self.new_client_user.text())==0:
+            report(self,text="Name of new user is empy")
+
+        elif len(self.new_client_password.text())==0:
+            report(self,text="Please input a password")
+
+        elif len(self.server_ip.text())==0:
+            report(self,text="Please input Server IP Address")
+
+        elif self.server_ip.text().count(".") < 3:
+            report(self,text="Incomplete Server IP Address")
+        else:
+            
+            msg=QMessageBox(self)
+            msg.setWindowTitle("Review Details")
+            msg.setText("These details will be used to create the MPI cluster. Proceed?")
+            msg.setInformativeText(f"Name of user : {self.new_client_user.text()}\nServer IP Address : {self.server_ip.text()}")
+    
+            msg.setIcon(QMessageBox.Icon.Information)
+            msg.setStandardButtons(QMessageBox.StandardButton.No|QMessageBox.StandardButton.Yes)
+            button=msg.exec()
+            if button==QMessageBox.StandardButton.Yes:
+                pass
+           
 
     def client1(self):  
         self.client01=MainClientPage()                                         

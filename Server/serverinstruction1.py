@@ -183,7 +183,7 @@ class MainServerPage(QWidget,QColor):
             report(self,text="Name of new user is empy")
 
         elif len(self.new_server_password.text())==0:
-            report(self,text="Please input as password")
+            report(self,text="Please input a password")
 
         elif self.type_of_code.currentText()=="Type of MPI Code":
             report(self,text="Please choose the type of MPI Code")
