@@ -1,8 +1,6 @@
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QVBoxLayout,QLineEdit
 from PyQt6.QtGui import QColor,QRegularExpressionValidator
 import sys
-import os
-import cmd
 import socket
 import ServerorClient
 from PyQt6.QtCore import QRegularExpression
@@ -14,7 +12,7 @@ class MainClientPage(QWidget,QColor):
     def __init__(self):
         super().__init__()     
         try: 
-            ip=socket.gethostbyname(socket.getfqdn())
+            ip=socket.gethostbyname(socket.gethostname())
         except:
             ip="Disconnected"
         if ip=="Disconnected":
@@ -31,13 +29,20 @@ class MainClientPage(QWidget,QColor):
         msg.setIcon(QMessageBox.Icon.Critical)
         msg.setStandardButtons(QMessageBox.StandardButton.Abort)
     
+    def receive_from_server():
+        s = socket.socket()
+        host = socket.gethostname()
+        port = 9077
+        s.connect((host, port))
+        print(s.recv(1024))
+    
     def main_window(self):   
         self.setGeometry(750,200,450,350)
         self.vbox=QVBoxLayout()
 
         self.new_client_user=QLineEdit()
         self.new_client_user.setFixedHeight(35)
-       
+        self.setProperty("class","main")
         self.new_client_user.setPlaceholderText(" Name of new user")
         
         self.new_client_password=QLineEdit()
@@ -48,6 +53,7 @@ class MainClientPage(QWidget,QColor):
         self.server_ip=QLineEdit()
         self.server_ip.setFixedHeight(35)
         self.server_ip.setPlaceholderText(" Server IP Address")
+
         ip_address="(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
         regex_ip=QRegularExpression("^" + ip_address + "\\." + ip_address + "\\." + ip_address + "\\." + ip_address + "$")
         ipValidator=QRegularExpressionValidator(regex_ip, self) 
@@ -58,27 +64,24 @@ class MainClientPage(QWidget,QColor):
         self.client.setFixedHeight(50)
         self.client.clicked.connect(self.proceed)
 
-        self.back=QPushButton("Exit",self)
-        self.back.setStyleSheet('background-color: red')
-        self.back.setFixedHeight(50)
+        self.exit=QPushButton("Exit",self)
+        self.exit.setStyleSheet('background-color: red')
+        self.exit.setFixedHeight(50)
         
         self.vbox.addWidget(self.new_client_user)
         self.vbox.addWidget(self.new_client_password)
         self.vbox.addWidget(self.server_ip)
         self.vbox.addWidget(self.client)
-        self.vbox.addWidget(self.back)
+        self.vbox.addWidget(self.exit)
         self.setLayout(self.vbox)
 
         try:
-            self.back.clicked.connect(self.buttonClicked)
+            self.exit.clicked.connect(self.close)
         except:
             pass
     def buttonClicked(self):
-            os.system(cmd)
-            QApplication.instance().quit()
+            sys.exit()
     def proceed(self):
-        global fileName
-
         def report(self,text):
             report=QMessageBox(self)
             report.setWindowTitle("Incomplete Details")
@@ -88,7 +91,7 @@ class MainClientPage(QWidget,QColor):
             report.exec()
 
         if len(self.new_client_user.text())==0:
-            report(self,text="Name of new user is empy")
+            report(self,text="Name of new user is empty")
 
         elif len(self.new_client_password.text())==0:
             report(self,text="Please input a password")

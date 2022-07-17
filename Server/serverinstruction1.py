@@ -2,13 +2,15 @@ from logging import critical
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog,QLabel
 from PyQt6.QtGui import QColor,QMovie,QIntValidator,QRegularExpressionValidator
 import sys
+import os
 import ServerorClient
 from pathlib import Path
-import os
-import cmd
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtCore import Qt,QRegularExpression
 import socket
+import subprocess
+import os
+import pyautogui
 
 class loading_screen(QWidget):
     def __init__(self):     
@@ -17,12 +19,15 @@ class loading_screen(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground)
         self.setWindowFlag(Qt.WindowType.WindowCloseButtonHint, False)  
+
         self.label_animate=QLabel(self)
+
         self.movie=QMovie('images/load_small.gif')
-        self.movie.setProperty("class","loader")
+
         self.label_animate.setMovie(self.movie)
         self.setFixedSize(50,50)
         self.setGeometry(625,420,450,350)
+
         self.start_animation()
         self.show()
 
@@ -33,14 +38,27 @@ class MainServerPage(QWidget,QColor):
     def __init__(self):     
         super().__init__() 
         try: 
-            ip=socket.gethostbyname(socket.getfqdn())
+            ip=socket.gethostbyname(socket.gethostname())
         except:
             ip="Disconnected"
         if ip=="Disconnected":
             self.disconnected() 
 
         self.setWindowTitle(f"Server PC : {ip}")
-        self.main_window()     
+        self.main_window()    
+
+    def send_to_client():
+        s = socket.socket()
+        host = socket.gethostname()
+        port = 9077
+        s.bind((host,port))
+        s.listen(5)
+
+        while True:
+            c, addr = s.accept()
+            print("Connection accepted from " + repr(addr[1]))
+            c.send("Thank you for connecting")
+            c.close() 
            
        
     def disconnected(self):
@@ -52,28 +70,33 @@ class MainServerPage(QWidget,QColor):
        
         button=msg.exec()
         if button==QMessageBox.StandardButton.Abort:
-            os.system(cmd)
-            QApplication.instance().quit()
+            sys.exit()
         else:
             pass
 
       
     def main_window(self):
-        self.back=QPushButton("Exit",self)
-        self.back.setFixedHeight(35)
-        self.back.setStyleSheet('background-color: red')
+        self.exit=QPushButton("Exit",self)
+        self.exit.setFixedHeight(35)
+        self.exit.setStyleSheet('background-color: red')
         self.setGeometry(150,200,450,350)
+        self.setProperty("class","main")
+        
 
         self.gbox=QGridLayout()
+        self.gbox.setProperty("class","server_layout")
+       
         
         self.new_server_user=QLineEdit()
         self.new_server_user.setFixedHeight(35)
         self.new_server_user.setPlaceholderText(" Name of new user")
+        self.new_server_user.setProperty("class","server_input")
 
         self.new_server_password=QLineEdit()
         self.new_server_password.setFixedHeight(35)
         self.new_server_password.setPlaceholderText(" Password")
         self.new_server_password.setEchoMode(QLineEdit.EchoMode.Password)
+        self.new_server_password.setProperty("class","server_input")
 
         self.choose_file=QPushButton("Choose File")
         self.choose_file.setFixedHeight(35)
@@ -83,10 +106,11 @@ class MainServerPage(QWidget,QColor):
         self.type_of_code.setFixedHeight(35)
         self.type_of_code.addItems(["Type of MPI Code","C","C++"])
 
-        self.number_of_hosts=QLineEdit()
-        self.number_of_hosts.setFixedHeight(35)
-        self.number_of_hosts.setPlaceholderText(" Number of hosts")
-        self.number_of_hosts.setValidator(QIntValidator())
+        self.number_of_ranks=QLineEdit()
+        self.number_of_ranks.setFixedHeight(35)
+        self.number_of_ranks.setPlaceholderText(" Number of ranks")
+        self.number_of_ranks.setValidator(QIntValidator())
+        self.number_of_ranks.setProperty("class","server_input")
 
         self.ssh_key=QComboBox()
         self.ssh_key.setFixedHeight(35)
@@ -95,6 +119,8 @@ class MainServerPage(QWidget,QColor):
         self.client_ip=QLineEdit()
         self.client_ip.setFixedHeight(35)
         self.client_ip.setPlaceholderText(" Client IP Address")
+        self.client_ip.setProperty("class","server_input")
+
         ip_address="(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
         regex_ip=QRegularExpression("^" + ip_address + "\\." + ip_address + "\\." + ip_address + "\\." + ip_address + "$")
         ipValidator=QRegularExpressionValidator(regex_ip, self) 
@@ -104,6 +130,7 @@ class MainServerPage(QWidget,QColor):
         self.server.setFixedHeight(35)
         self.server.setStyleSheet('background-color: green')
         self.server.clicked.connect(self.proceed)
+
         self.load=loading_screen()
         self.load.hide()
         
@@ -112,23 +139,22 @@ class MainServerPage(QWidget,QColor):
         self.gbox.addWidget(self.new_server_password,1,1)
         self.gbox.addWidget(self.choose_file,2,0)
         self.gbox.addWidget(self.type_of_code,2,1)
-        self.gbox.addWidget(self.number_of_hosts,3,0)
+        self.gbox.addWidget(self.number_of_ranks,3,0)
         self.gbox.addWidget(self.ssh_key,3,1)
         self.gbox.addWidget(self.client_ip,4,0)
-        self.gbox.addWidget(self.back,5,0)
+        self.gbox.addWidget(self.exit,5,0)
         self.gbox.addWidget(self.server,5,1)
 
 
         self.setLayout(self.gbox)
     
         try:
-            self.back.clicked.connect(self.buttonClicked)
+            self.exit.clicked.connect(self.close)
+            self.exit.clicked.connect(self.load.hide)
         except:
             pass
 
-    def buttonClicked(self):
-            os.system(cmd)
-            QApplication.instance().quit()
+ 
 
     fileName="Choose File"
     def showFileDialog(self):
@@ -177,7 +203,7 @@ class MainServerPage(QWidget,QColor):
             report.exec()
 
         if len(self.new_server_user.text())==0:
-            report(self,text="Name of new user is empy")
+            report(self,text="Name of new user is empty")
 
         elif len(self.new_server_password.text())==0:
             report(self,text="Please input a password")
@@ -188,8 +214,8 @@ class MainServerPage(QWidget,QColor):
         elif self.ssh_key.currentText()=="Type of ssh key":
             report(self,text="Please specify ssh key")
 
-        elif len(self.number_of_hosts.text())==0:
-            report(self,text="Please input number of hosts")
+        elif len(self.number_of_ranks.text())==0:
+            report(self,text="Please input number of ranks")
 
         elif len(self.client_ip.text())==0:
             report(self,text="Please input Client IP Address")
@@ -201,13 +227,19 @@ class MainServerPage(QWidget,QColor):
                 msg=QMessageBox(self)
                 msg.setWindowTitle("Review Details")
                 msg.setText("These details will be used to create the MPI cluster. Proceed?")
-                msg.setInformativeText(f"Name of user : {self.new_server_user.text()}\nChosen file : {fileName}\nType of MPI Code : {self.type_of_code.currentText()}\nType of ssh key : {self.ssh_key.currentText()}\nNumber of hosts : {self.number_of_hosts.text()}\nClient IP Address : {self.client_ip.text()}")
+                msg.setInformativeText(f"Name of user : {self.new_server_user.text()}\nChosen file : {fileName}\nType of MPI Code : {self.type_of_code.currentText()}\nType of ssh key : {self.ssh_key.currentText()}\nNumber of ranks : {self.number_of_ranks.text()}\nClient IP Address : {self.client_ip.text()}")
     
                 msg.setIcon(QMessageBox.Icon.Information)
                 msg.setStandardButtons(QMessageBox.StandardButton.No|QMessageBox.StandardButton.Yes)
                 button=msg.exec()
                 if button==QMessageBox.StandardButton.Yes:
                     self.load.show()
+                    # a=1
+                    # while a<=2:
+                    #     subprocess.run(["cd","images"],shell=True)
+                    #     subprocess.run("ls",shell=True)
+                    #     pyautogui.hotkey('exit()')
+                    #     a=a+1
                 elif button==QMessageBox.StandardButton.No:
                     self.load.hide()
 

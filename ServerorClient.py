@@ -24,6 +24,7 @@ class ChooseWindow(QWidget,QColor):
         self.setGeometry(350,200,600,500)
 
         self.vbox=QVBoxLayout()
+        self.vbox.setProperty("class","server_client_layout")
 
         self.server=QPushButton("Server",self)
         self.server.setFixedHeight(50)
