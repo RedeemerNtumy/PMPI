@@ -3,14 +3,16 @@ from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayo
 from PyQt6.QtGui import QColor,QMovie,QIntValidator,QRegularExpressionValidator
 import sys
 import os
+
+from outcome import capture
 import ServerorClient
 from pathlib import Path
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtCore import Qt,QRegularExpression
 import socket
 import subprocess
-import os
 import pyautogui
+
 
 class loading_screen(QWidget):
     def __init__(self):     
@@ -37,14 +39,15 @@ class loading_screen(QWidget):
 class MainServerPage(QWidget,QColor):  
     def __init__(self):     
         super().__init__() 
-        try: 
-            ip=socket.gethostbyname(socket.gethostname())
-        except:
-            ip="Disconnected"
-        if ip=="Disconnected":
-            self.disconnected() 
+        # try: 
+        #     host_name=socket.getfqdn()
+        #     ip=socket.gethostbyname(host_name)
+        # except:
+        #     ip="Disconnected"
+        # if ip=="Disconnected":
+        #     self.disconnected() 
 
-        self.setWindowTitle(f"Server PC : {ip}")
+        # self.setWindowTitle(f"Server PC : {ip}")
         self.main_window()    
 
     def send_to_client():
@@ -81,7 +84,6 @@ class MainServerPage(QWidget,QColor):
         self.exit.setStyleSheet('background-color: red')
         self.setGeometry(150,200,450,350)
         self.setProperty("class","main")
-        
 
         self.gbox=QGridLayout()
         self.gbox.setProperty("class","server_layout")
@@ -91,6 +93,9 @@ class MainServerPage(QWidget,QColor):
         self.new_server_user.setFixedHeight(35)
         self.new_server_user.setPlaceholderText(" Name of new user")
         self.new_server_user.setProperty("class","server_input")
+        # self.new_server_user.setText("Yes")
+        # something=self.new_server_user.text()
+        # os.environ(something)
 
         self.new_server_password=QLineEdit()
         self.new_server_password.setFixedHeight(35)
@@ -121,6 +126,12 @@ class MainServerPage(QWidget,QColor):
         self.client_ip.setPlaceholderText(" Client IP Address")
         self.client_ip.setProperty("class","server_input")
 
+        self.main_user_account_password=QLineEdit()
+        self.main_user_account_password.setFixedHeight(35)
+        self.main_user_account_password.setPlaceholderText(" Main user account password")
+        self.main_user_account_password.setEchoMode(QLineEdit.EchoMode.Password)
+        self.main_user_account_password.setProperty("class","server_input")
+
         ip_address="(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
         regex_ip=QRegularExpression("^" + ip_address + "\\." + ip_address + "\\." + ip_address + "\\." + ip_address + "$")
         ipValidator=QRegularExpressionValidator(regex_ip, self) 
@@ -142,6 +153,7 @@ class MainServerPage(QWidget,QColor):
         self.gbox.addWidget(self.number_of_ranks,3,0)
         self.gbox.addWidget(self.ssh_key,3,1)
         self.gbox.addWidget(self.client_ip,4,0)
+        self.gbox.addWidget(self.main_user_account_password,4,1)
         self.gbox.addWidget(self.exit,5,0)
         self.gbox.addWidget(self.server,5,1)
 
@@ -234,12 +246,15 @@ class MainServerPage(QWidget,QColor):
                 button=msg.exec()
                 if button==QMessageBox.StandardButton.Yes:
                     self.load.show()
-                    # a=1
-                    # while a<=2:
-                    #     subprocess.run(["cd","images"],shell=True)
-                    #     subprocess.run("ls",shell=True)
-                    #     pyautogui.hotkey('exit()')
-                    #     a=a+1
+                    # new_user_process=subprocess.Popen(f"sudo adduser {self.new_server_user.text()}").communicate()[0]
+                    # new_user_process.stdin.write(f"{self.main_user_account_password.text()}").communicate()[0]
+                    # new_user_process.stdin.close()
+                    process=subprocess.Popen(f'bash setup.sh "{self.new_server_user.text()}" "{self.new_server_password.text()}"',shell=True)
+                    process.communicate()[0]
+                    
+                    
+                    
+            
                 elif button==QMessageBox.StandardButton.No:
                     self.load.hide()
 
