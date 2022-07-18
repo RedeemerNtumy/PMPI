@@ -1,0 +1,25 @@
+.server_button{
+    background-color: green;
+    border-radius: 20px;
+    margin-bottom: 5;
+   
+}
+.client_button{
+    background-color: rgb(31, 71, 232);
+    border-radius: 20px;
+    margin-top: 5;
+    
+}
+.main{
+    background-color:teal;
+    
+}
+.label{
+    color: black;
+}
+.get_started{
+    background-color: green;
+    border-radius: 20px;
+    margin-bottom: 5;
+    
+}
