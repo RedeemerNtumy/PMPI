@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout
+from turtle import color
+from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QComboBox
 from PyQt6.QtGui import QColor,QFont
 from PyQt6.QtCore import Qt
 import sys
@@ -16,36 +17,49 @@ class ChooseWindow(QWidget,QColor):
         self.setWindowTitle("Client or Server")
         self.setProperty("class","main")
 
+        self.device_type=QLabel("Select a device type")
+        self.device_type.setFont(QFont("Serif",20,QFont.Weight.DemiBold))
+        self.device_type.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.device_type.setProperty("class","label_start")
+
+        self.type_of_device=QComboBox()
+        self.type_of_device.setProperty("class","label_cont")
+        self.type_of_device.addItems(["Click to select","Server","Client"])
+
         self.question = QLabel("Would you like this PC to be the Server or the Client?", self)
-        self.question.setProperty("class","label")
+        self.question.setProperty("class","label_cont")
         self.question.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.question.setFont(QFont("Arial",20))
+        self.question.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
 
         self.setGeometry(350,200,600,500)
 
         self.vbox=QVBoxLayout()
+        self.vbox.addStretch()
+        self.vbox.setSpacing(0)
         self.vbox.setProperty("class","server_client_layout")
-
-        self.server=QPushButton("Server",self)
-        self.server.setFixedHeight(50)
-        self.server.setProperty("class","server_button")
-       
-
-        self.client=QPushButton("Client",self)
-        self.client.setFixedHeight(50)
-        self.client.setProperty("class","client_button")
-
-        self.vbox.addWidget(self.question)
-        self.vbox.addWidget(self.server)
-        self.vbox.addWidget(self.client)
         
+    
+        self.continued=QPushButton("Continue",self)
+        self.continued.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
+        self.continued.setProperty("class","continued")
+        self.continued.setFixedHeight(50)
+        self.continued.setFixedWidth(380)
+
+        self.vbox.addWidget(self.device_type)
+        self.vbox.addWidget(self.question)
+        self.vbox.addWidget(self.type_of_device)
+        self.vbox.addWidget(self.continued)
+        self.vbox.setAlignment(Qt.AlignmentFlag.AlignAbsolute)
+        self.vbox.addStretch(0)
+        
+    
         self.setLayout(self.vbox)
 
         self.chooseWindow1=Server.serverinstruction1.MainServerPage()
         self.chooseWindow2=Client.clientinstruction1.MainClientPage()
 
-        self.server.clicked.connect(self.chooseWindow1.server1)
-        self.client.clicked.connect(self.chooseWindow2.client1)           
+        # self.server.clicked.connect(self.chooseWindow1.server1)
+        # self.client.clicked.connect(self.chooseWindow2.client1)           
 
     def serverclient(self):  
         self.serclient=ChooseWindow()                                         
