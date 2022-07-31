@@ -1,15 +1,8 @@
-import cmd
-from tkinter.font import BOLD
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout
-from PyQt6.QtGui import QFont,QColor
-from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont,QColor,QGuiApplication
+from PyQt6.QtCore import Qt,QRect,QPoint
 import sys
-
-from numpy import size
 import ServerorClient
-import subprocess
-import os
-import pyautogui
 
 
 class Window(QWidget,QColor):
@@ -17,6 +10,12 @@ class Window(QWidget,QColor):
         super().__init__()
         self.show()
         self.main_window()
+
+    def center(self):
+        qr=self.frameGeometry()
+        cp=QGuiApplication.primaryScreen().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
     
     def main_window(self):
         self.label_start = QLabel("The Joy of PMPI", self)
@@ -34,10 +33,10 @@ class Window(QWidget,QColor):
         self.vbox=QVBoxLayout()
         self.vbox.addStretch()
         self.vbox.setSpacing(0)
-        self.vbox.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.vbox.setProperty("class","vbox")
+        self.vbox.setAlignment(Qt.AlignmentFlag.AlignAbsolute)
+
         self.setWindowTitle("PMPI")
-        self.setGeometry(350,200,600,500)
+    
         
 
         self.btn_start=QPushButton("Get Started",self)
@@ -50,6 +49,8 @@ class Window(QWidget,QColor):
         self.vbox.addWidget(self.label_start)
         self.vbox.addWidget(self.label_cont)
         self.vbox.addWidget(self.btn_start)
+        self.vbox.addStretch(0)
+        
 
         self.setLayout(self.vbox)
 
