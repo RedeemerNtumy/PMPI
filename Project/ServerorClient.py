@@ -19,7 +19,9 @@ class ChooseWindow(QWidget,QColor):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def main_window(self):                                  
+    def main_window(self):    
+        self.setFixedHeight(550)
+        self.setFixedWidth(700)                              
         self.setWindowTitle("Client or Server")
         self.setProperty("class","main")
 

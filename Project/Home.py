@@ -18,6 +18,8 @@ class Window(QWidget,QColor):
         self.move(qr.topLeft())
     
     def main_window(self):
+        self.setFixedHeight(550)
+        self.setFixedWidth(700)
         # QApplication.setStyle(QStyleFactory.create("Plastique"))
         self.label_start = QLabel("The Joy of PMPI", self)
         self.label_start.setFont(QFont("Serif",20,QFont.Weight.DemiBold))

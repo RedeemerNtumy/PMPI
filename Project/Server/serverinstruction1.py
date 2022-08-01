@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog,QLabel
-from PyQt6.QtGui import QColor,QMovie,QIntValidator,QRegularExpressionValidator
+from PyQt6.QtGui import QColor,QMovie,QIntValidator,QRegularExpressionValidator,QGuiApplication
 import sys
 import os
 import ServerorClient
@@ -25,10 +25,16 @@ class loading_screen(QWidget):
 
         self.label_animate.setMovie(self.movie)
         self.setFixedSize(50,50)
-        self.setGeometry(625,420,450,350)
+        # self.setGeometry(625,420,450,350)
 
         self.start_animation()
         self.show()
+
+    def center(self):
+        qr=self.frameGeometry()
+        cp=QGuiApplication.primaryScreen().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft()) 
 
     def start_animation(self):
         self.movie.start()
@@ -46,7 +52,8 @@ class MainServerPage(QWidget,QColor):
             self.disconnected() 
 
         self.setWindowTitle(f"Server PC : {ip}")
-        self.main_window()    
+        self.main_window() 
+      
 
     def send_to_client():
         s = socket.socket()
@@ -80,7 +87,8 @@ class MainServerPage(QWidget,QColor):
         self.exit=QPushButton("Exit",self)
         self.exit.setFixedHeight(35)
         self.exit.setStyleSheet('background-color: red')
-        self.setGeometry(150,200,450,350)
+        self.setFixedHeight(550)
+        self.setFixedWidth(700)
         self.setProperty("class","main")
 
         self.gbox=QGridLayout()
