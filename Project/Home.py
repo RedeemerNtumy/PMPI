@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout
+from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QStyleFactory
 from PyQt6.QtGui import QFont,QColor,QGuiApplication
-from PyQt6.QtCore import Qt,QRect,QPoint
+from PyQt6.QtCore import Qt
 import sys
 import ServerorClient
 
@@ -18,8 +18,9 @@ class Window(QWidget,QColor):
         self.move(qr.topLeft())
     
     def main_window(self):
+        # QApplication.setStyle(QStyleFactory.create("Plastique"))
         self.label_start = QLabel("The Joy of PMPI", self)
-        self.label_start.setFont(QFont("Serif",26,QFont.Weight.DemiBold))
+        self.label_start.setFont(QFont("Serif",20,QFont.Weight.DemiBold))
         self.label_start.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label_start.setProperty("class","label_start")
        
