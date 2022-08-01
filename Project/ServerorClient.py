@@ -1,5 +1,5 @@
 from turtle import color
-from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QComboBox
+from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QComboBox,QMessageBox
 from PyQt6.QtGui import QColor,QFont,QGuiApplication
 from PyQt6.QtCore import Qt
 import sys
@@ -69,13 +69,32 @@ class ChooseWindow(QWidget,QColor):
         self.chooseWindow1=Server.serverinstruction1.MainServerPage()
         self.chooseWindow2=Client.clientinstruction1.MainClientPage()
 
-        # self.server.clicked.connect(self.chooseWindow1.server1)
-        # self.client.clicked.connect(self.chooseWindow2.client1)           
+        # self.continued.clicked.connect(self.chooseWindow1.server1)
+        # self.continued.clicked.connect(self.chooseWindow2.client1)
+        # self.continued.clicked.connect(self.chooseWindow1.hide)
+        # self.continued.clicked.connect(self.chooseWindow2.hide)
+        self.continued.clicked.connect(self.proceed)
+              
 
     def serverclient(self):  
         self.serclient=ChooseWindow()                                         
         self.serclient.show()
-        
+
+    def proceed(self):
+        if self.type_of_device.currentText()=="Server":
+            self.chooseWindow1.show()
+        elif self.type_of_device.currentText()=="Client":
+            self.chooseWindow2.show()
+            
+        else:
+            msg=QMessageBox(self)
+            msg.setWindowTitle("Review Details")
+            msg.setText("Please select the type of device")
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+            msg.exec()
+
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
