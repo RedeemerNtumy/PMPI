@@ -1,6 +1,6 @@
 from turtle import color
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QComboBox
-from PyQt6.QtGui import QColor,QFont
+from PyQt6.QtGui import QColor,QFont,QGuiApplication
 from PyQt6.QtCore import Qt
 import sys
 import Home
@@ -13,6 +13,12 @@ class ChooseWindow(QWidget,QColor):
         super().__init__()
         self.main_window()   
 
+    def center(self):
+        qr=self.frameGeometry()
+        cp=QGuiApplication.primaryScreen().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
     def main_window(self):                                  
         self.setWindowTitle("Client or Server")
         self.setProperty("class","main")
@@ -20,18 +26,23 @@ class ChooseWindow(QWidget,QColor):
         self.device_type=QLabel("Select a device type")
         self.device_type.setFont(QFont("Serif",20,QFont.Weight.DemiBold))
         self.device_type.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.device_type.setProperty("class","label_start")
+        self.device_type.setProperty("class","label_select")
 
         self.type_of_device=QComboBox()
-        self.type_of_device.setProperty("class","label_cont")
+        self.type_of_device.setFixedHeight(100)
+        self.type_of_device.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
+        self.type_of_device.setProperty("class","combo_cont")
         self.type_of_device.addItems(["Click to select","Server","Client"])
+        self.type_of_device.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.type_of_device.setFixedWidth(350)
+        
 
         self.question = QLabel("Would you like this PC to be the Server or the Client?", self)
         self.question.setProperty("class","label_cont")
         self.question.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.question.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
 
-        self.setGeometry(350,200,600,500)
+       
 
         self.vbox=QVBoxLayout()
         self.vbox.addStretch()
@@ -43,7 +54,7 @@ class ChooseWindow(QWidget,QColor):
         self.continued.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
         self.continued.setProperty("class","continued")
         self.continued.setFixedHeight(50)
-        self.continued.setFixedWidth(380)
+        self.continued.setFixedWidth(350)
 
         self.vbox.addWidget(self.device_type)
         self.vbox.addWidget(self.question)
