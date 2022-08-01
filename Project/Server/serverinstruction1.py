@@ -36,15 +36,16 @@ class loading_screen(QWidget):
 class MainServerPage(QWidget,QColor):  
     def __init__(self):     
         super().__init__() 
-        # try: 
-        #     host_name=socket.getfqdn()
-        #     ip=socket.gethostbyname(host_name)
-        # except:
-        #     ip="Disconnected"
-        # if ip=="Disconnected":
-        #     self.disconnected() 
+        try: 
+            host_name=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            host_name.connect(("8.8.8.8",80))
+            ip=host_name.getsockname()[0]
+        except:
+            ip="Disconnected"
+        if ip=="Disconnected":
+            self.disconnected() 
 
-        # self.setWindowTitle(f"Server PC : {ip}")
+        self.setWindowTitle(f"Server PC : {ip}")
         self.main_window()    
 
     def send_to_client():

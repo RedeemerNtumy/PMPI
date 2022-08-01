@@ -69,10 +69,6 @@ class ChooseWindow(QWidget,QColor):
         self.chooseWindow1=Server.serverinstruction1.MainServerPage()
         self.chooseWindow2=Client.clientinstruction1.MainClientPage()
 
-        # self.continued.clicked.connect(self.chooseWindow1.server1)
-        # self.continued.clicked.connect(self.chooseWindow2.client1)
-        # self.continued.clicked.connect(self.chooseWindow1.hide)
-        # self.continued.clicked.connect(self.chooseWindow2.hide)
         self.continued.clicked.connect(self.proceed)
               
 

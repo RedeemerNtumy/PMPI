@@ -1,4 +1,7 @@
- #!/bin/bash 
-python3 
-xdotool key  --clearmodifiers --delay 2 "exit()" 
+#!/bin/bash 
+useradd -p $2 $1
+# echo $2 | passwd --stdin $1
+# done
+
+
 
