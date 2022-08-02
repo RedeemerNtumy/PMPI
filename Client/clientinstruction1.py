@@ -11,15 +11,16 @@ from PyQt6.QtWidgets import QMessageBox
 class MainClientPage(QWidget,QColor):  
     def __init__(self):
         super().__init__()     
-        # try: 
-        #     host_name=socket.getfqdn()
-        #     ip=socket.gethostbyname(host_name)
-        # except:
-        #     ip="Disconnected"
-        # if ip=="Disconnected":
-        #     self.disconnected() 
+        try: 
+            host_name=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            host_name.connect(("8.8.8.8",80))
+            ip=host_name.getsockname()[0]
+        except:
+            ip="Disconnected"
+        if ip=="Disconnected":
+            self.disconnected() 
 
-        # self.setWindowTitle(f"Client PC : {ip}")
+        self.setWindowTitle(f"Client PC : {ip}")
                              
         self.main_window()
         
