@@ -100,7 +100,8 @@ class MainServerPage(QWidget,QColor):
         self.name_server.setProperty("class","label_cont")
         
         self.new_server_user=QLineEdit()
-        #self.new_server_user.setProperty("class","line_edit")
+        self.new_server_user.setStyleSheet("border: 1px solid #004ADB;\n border-radius:5px")
+        # self.new_server_user.setProperty("class","line_edit")
         self.new_server_user.setFixedHeight(55)
         self.new_server_user.setFixedWidth(300)
         self.new_server_user.setPlaceholderText(" Name of new user")
@@ -131,7 +132,7 @@ class MainServerPage(QWidget,QColor):
         self.ssh_key_label.setProperty("class","label_cont")
 
         self.new_server_password=QLineEdit()
-        #self.new_server_password.setProperty("class","line_edit")
+        self.new_server_password.setStyleSheet("border: 1px solid #004ADB;\n border-radius:5px")
         self.new_server_password.setFixedHeight(55)
         self.new_server_password.setFixedWidth(300)
         self.new_server_password.setPlaceholderText(" Password")
@@ -151,7 +152,7 @@ class MainServerPage(QWidget,QColor):
         self.type_of_code.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
 
         self.number_of_ranks=QLineEdit()
-        #self.number_of_ranks.setProperty("class","line_edit")
+        self.number_of_ranks.setStyleSheet("border: 1px solid #004ADB;\n border-radius:5px")
         self.number_of_ranks.setFixedHeight(55)
         self.number_of_ranks.setFixedWidth(300)
         self.number_of_ranks.setPlaceholderText(" Number of ranks")
@@ -167,14 +168,14 @@ class MainServerPage(QWidget,QColor):
         self.ssh_key.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
         
         self.client_ip=QLineEdit()
-        #self.client_ip.setProperty("class","line_edit")
+        self.client_ip.setStyleSheet("border: 1px solid #004ADB;\n border-radius:5px")
         self.client_ip.setFixedHeight(55)
         self.client_ip.setFixedWidth(300)
         self.client_ip.setPlaceholderText(" Client IP Address")
         self.client_ip.setProperty("class","server_input")
 
         self.main_user_account_password=QLineEdit()
-        #self.main_user_account_password.setProperty("class","line_edit")
+        self.main_user_account_password.setStyleSheet("border: 1px solid #004ADB;\n border-radius:5px")
         self.main_user_account_password.setFixedHeight(55)
         self.main_user_account_password.setFixedWidth(300)
         self.main_user_account_password.setPlaceholderText(" Main user account password")
@@ -329,9 +330,9 @@ class MainServerPage(QWidget,QColor):
 
 
                     # "{ip}"
-                    process=subprocess.Popen(f'bash setup.sh "{self.new_server_user.text()}" "{self.new_server_password.text()}" "{self.main_user_account_password.text()}" "{fileName}" "{self.ssh_key.currentText()}" "{self.type_of_code.currentText()}" "{self.client_ip.text()}"',shell=True)
+                    # process=subprocess.Popen(f'bash setup.sh "{self.new_server_user.text()}" "{self.new_server_password.text()}" "{self.main_user_account_password.text()}" "{fileName}" "{self.ssh_key.currentText()}" "{self.type_of_code.currentText()}" "{self.client_ip.text()}"',shell=True)
      
-                    process.communicate()[0]
+                    # process.communicate()[0]
                     
                     
                     

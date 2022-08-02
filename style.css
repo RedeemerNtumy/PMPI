@@ -51,12 +51,11 @@
     
     
 }
-/* .line_edit{
-    border-color:#004ADB;
-    border-radius: 9px;
+.line_edit{
+    border:5px solid #004ADB;
     
     
-} */
+}
 .continued{
     background-color:#004ADB;
     border-radius: 9px;
