@@ -32,11 +32,12 @@ class ChooseWindow(QWidget,QColor):
 
         self.type_of_device=QComboBox()
         self.type_of_device.setFixedHeight(100)
+        self.type_of_device.setFixedWidth(350)
         self.type_of_device.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
         self.type_of_device.setProperty("class","combo_cont")
         self.type_of_device.addItems(["Click to select","Server","Client"])
         self.type_of_device.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
-        self.type_of_device.setFixedWidth(350)
+        
         
 
         self.question = QLabel("Would you like this PC to be the Server or the Client?", self)

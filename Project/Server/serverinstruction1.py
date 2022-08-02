@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog,QLabel
-from PyQt6.QtGui import QColor,QMovie,QIntValidator,QRegularExpressionValidator,QGuiApplication
+from PyQt6.QtGui import QColor,QMovie,QIntValidator,QRegularExpressionValidator,QGuiApplication,QFont
 import sys
 import os
 import ServerorClient
@@ -8,7 +8,6 @@ from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtCore import Qt,QRegularExpression
 import socket
 import subprocess
-import pyautogui
 
 
 class loading_screen(QWidget):
@@ -84,27 +83,57 @@ class MainServerPage(QWidget,QColor):
 
       
     def main_window(self):
-        self.exit=QPushButton("Exit",self)
-        self.exit.setFixedHeight(35)
-        self.exit.setStyleSheet('background-color: red')
-        self.setFixedHeight(550)
-        self.setFixedWidth(700)
+        
+        self.setFixedHeight(700)
+        self.setFixedWidth(1000)
         self.setProperty("class","main")
 
         self.gbox=QGridLayout()
+        self.gbox.setSpacing(0)
         self.gbox.setProperty("class","server_layout")
-       
+        
+        self.fill_form=QLabel("Fill form below to establish connection")
+        self.fill_form.setFont(QFont("Serif",20,QFont.Weight.DemiBold))
+        self.fill_form.setProperty("class","label_select")
+        
+        self.name_server=QLabel("Name",self)
+        self.name_server.setProperty("class","label_cont")
         
         self.new_server_user=QLineEdit()
-        self.new_server_user.setFixedHeight(35)
+        #self.new_server_user.setProperty("class","line_edit")
+        self.new_server_user.setFixedHeight(55)
+        self.new_server_user.setFixedWidth(300)
         self.new_server_user.setPlaceholderText(" Name of new user")
         self.new_server_user.setProperty("class","server_input")
         # self.new_server_user.setText("Yes")
         # something=self.new_server_user.text()
         # os.environ(something)
 
+        self.ip_client=QLabel("IP Address")
+        self.ip_client.setProperty("class","label_cont")
+        
+        self.connect_password=QLabel("Connection Password",self)
+        self.connect_password.setProperty("class","label_cont")
+
+        self.mpi_file=QLabel("MPI File",self)
+        self.mpi_file.setProperty("class","label_cont")
+
+        self.main_password=QLabel("Main User Account Password",self)
+        self.main_password.setProperty("class","label_cont")
+
+        self.mpi_code=QLabel("MPI Code",self)
+        self.mpi_code.setProperty("class","label_cont")
+
+        self.hosts=QLabel("Hosts",self)
+        self.hosts.setProperty("class","label_cont")
+
+        self.ssh_key_label= QLabel("SSH Key",self)
+        self.ssh_key_label.setProperty("class","label_cont")
+
         self.new_server_password=QLineEdit()
-        self.new_server_password.setFixedHeight(35)
+        #self.new_server_password.setProperty("class","line_edit")
+        self.new_server_password.setFixedHeight(55)
+        self.new_server_password.setFixedWidth(300)
         self.new_server_password.setPlaceholderText(" Password")
         self.new_server_password.setEchoMode(QLineEdit.EchoMode.Password)
         self.new_server_password.setProperty("class","server_input")
@@ -114,26 +143,40 @@ class MainServerPage(QWidget,QColor):
         self.choose_file.clicked.connect(self.showFileDialog)
 
         self.type_of_code=QComboBox()
-        self.type_of_code.setFixedHeight(35)
+        self.type_of_code.setFixedHeight(100)
+        self.type_of_code.setFixedWidth(350)
+        self.type_of_code.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
+        self.type_of_code.setProperty("class","combo_cont")
         self.type_of_code.addItems(["Type of MPI Code","C","C++"])
+        self.type_of_code.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
 
         self.number_of_ranks=QLineEdit()
-        self.number_of_ranks.setFixedHeight(35)
+        #self.number_of_ranks.setProperty("class","line_edit")
+        self.number_of_ranks.setFixedHeight(55)
+        self.number_of_ranks.setFixedWidth(300)
         self.number_of_ranks.setPlaceholderText(" Number of ranks")
         self.number_of_ranks.setValidator(QIntValidator())
         self.number_of_ranks.setProperty("class","server_input")
 
         self.ssh_key=QComboBox()
-        self.ssh_key.setFixedHeight(35)
+        self.ssh_key.setFixedHeight(100)
+        self.ssh_key.setFixedWidth(350)
+        self.ssh_key.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
+        self.ssh_key.setProperty("class","combo_cont")
         self.ssh_key.addItems(["Type of ssh key","RSA","DSA"])
+        self.ssh_key.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
         
         self.client_ip=QLineEdit()
-        self.client_ip.setFixedHeight(35)
+        #self.client_ip.setProperty("class","line_edit")
+        self.client_ip.setFixedHeight(55)
+        self.client_ip.setFixedWidth(300)
         self.client_ip.setPlaceholderText(" Client IP Address")
         self.client_ip.setProperty("class","server_input")
 
         self.main_user_account_password=QLineEdit()
-        self.main_user_account_password.setFixedHeight(35)
+        #self.main_user_account_password.setProperty("class","line_edit")
+        self.main_user_account_password.setFixedHeight(55)
+        self.main_user_account_password.setFixedWidth(300)
         self.main_user_account_password.setPlaceholderText(" Main user account password")
         self.main_user_account_password.setEchoMode(QLineEdit.EchoMode.Password)
         self.main_user_account_password.setProperty("class","server_input")
@@ -142,7 +185,11 @@ class MainServerPage(QWidget,QColor):
         regex_ip=QRegularExpression("^" + ip_address + "\\." + ip_address + "\\." + ip_address + "\\." + ip_address + "$")
         ipValidator=QRegularExpressionValidator(regex_ip, self) 
         self.client_ip.setValidator(ipValidator)
-      
+
+        self.exit=QPushButton("Cancel",self)
+        self.exit.setFixedHeight(35)
+        self.exit.setStyleSheet('background-color: red')
+
         self.server=QPushButton("Establish Connection",self)
         self.server.setFixedHeight(35)
         self.server.setStyleSheet('background-color: green')
@@ -151,17 +198,33 @@ class MainServerPage(QWidget,QColor):
         self.load=loading_screen()
         self.load.hide()
         
-       
-        self.gbox.addWidget(self.new_server_user,1,0)
-        self.gbox.addWidget(self.new_server_password,1,1)
-        self.gbox.addWidget(self.choose_file,2,0)
-        self.gbox.addWidget(self.type_of_code,2,1)
-        self.gbox.addWidget(self.number_of_ranks,3,0)
-        self.gbox.addWidget(self.ssh_key,3,1)
-        self.gbox.addWidget(self.client_ip,4,0)
-        self.gbox.addWidget(self.main_user_account_password,4,1)
-        self.gbox.addWidget(self.exit,5,0)
-        self.gbox.addWidget(self.server,5,1)
+        self.gbox.addWidget(self.fill_form,0,0)
+        self.gbox.addWidget(self.name_server,1,0)
+        self.gbox.addWidget(self.new_server_user,2,0)
+        
+        self.gbox.addWidget(self.ip_client,1,1)
+        self.gbox.addWidget(self.client_ip,2,1)
+
+        self.gbox.addWidget(self.connect_password,3,0)
+        self.gbox.addWidget(self.new_server_password,4,0)
+
+        self.gbox.addWidget(self.mpi_file,3,1)
+        self.gbox.addWidget(self.choose_file,4,1)
+    
+        self.gbox.addWidget(self.main_password,5,0)
+        self.gbox.addWidget(self.main_user_account_password,6,0)
+
+        self.gbox.addWidget(self.mpi_code,5,1)
+        self.gbox.addWidget(self.type_of_code,6,1)
+
+        self.gbox.addWidget(self.hosts,7,0)
+        self.gbox.addWidget(self.number_of_ranks,8,0)
+
+        self.gbox.addWidget(self.ssh_key_label,7,1)
+        self.gbox.addWidget(self.ssh_key,8,1)
+        
+        self.gbox.addWidget(self.exit,9,0)
+        self.gbox.addWidget(self.server,9,1)
 
 
         self.setLayout(self.gbox)
