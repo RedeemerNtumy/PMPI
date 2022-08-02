@@ -257,6 +257,7 @@ class MainServerPage(QWidget,QColor):
                 self.choose_file.setText("Choose File")
                 self.invalid_file()
                 pass 
+            #changes to be made
             
         except:
             fileName=file_name
