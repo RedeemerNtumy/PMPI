@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog,QLabel,QSizePolicy
+from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog,QLabel
 from PyQt6.QtGui import QColor,QMovie,QIntValidator,QRegularExpressionValidator,QGuiApplication,QFont
 import sys
 import os
@@ -86,7 +86,7 @@ class MainServerPage(QWidget,QColor):
       
     def main_window(self):
         
-        self.setFixedHeight(550) #Can change depending on screen
+        self.setFixedHeight(700) #Can change depending on screen
         self.setFixedWidth(1000)
         self.setProperty("class","main")
 
@@ -135,6 +135,9 @@ class MainServerPage(QWidget,QColor):
         self.ssh_key_label= QLabel("SSH Key",self)
         self.ssh_key_label.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
         self.ssh_key_label.setProperty("class","label_cons")
+
+        self.space1=QLabel("    ",self)
+        self.space2=QLabel("    ",self)
 
         self.new_server_password=QLineEdit()
         self.new_server_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
@@ -238,9 +241,12 @@ class MainServerPage(QWidget,QColor):
 
         self.gbox.addWidget(self.ssh_key_label,7,1)
         self.gbox.addWidget(self.ssh_key,8,1)
+
+        self.gbox.addWidget(self.space1,9,0)
+        self.gbox.addWidget(self.space2,9,1)
         
-        self.gbox.addWidget(self.exit,9,0)
-        self.gbox.addWidget(self.server,9,1)
+        self.gbox.addWidget(self.exit,10,0)
+        self.gbox.addWidget(self.server,10,1)
 
 
         self.setLayout(self.gbox)

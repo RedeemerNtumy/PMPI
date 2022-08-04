@@ -1,9 +1,9 @@
-from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QVBoxLayout,QLineEdit
-from PyQt6.QtGui import QColor,QRegularExpressionValidator
+from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QVBoxLayout,QLineEdit,QLabel,QHBoxLayout
+from PyQt6.QtGui import QColor,QRegularExpressionValidator,QGuiApplication,QFont
 import sys
 import socket
 import ServerorClient
-from PyQt6.QtCore import QRegularExpression
+from PyQt6.QtCore import QRegularExpression,Qt
 from PyQt6.QtWidgets import QMessageBox
 
 
@@ -23,6 +23,12 @@ class MainClientPage(QWidget,QColor):
         self.setWindowTitle(f"Client PC : {ip}")
                              
         self.main_window()
+
+    def center(self):
+        qr=self.frameGeometry()
+        cp=QGuiApplication.primaryScreen().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft()) 
         
     def disconnected(self):
         msg=QMessageBox(self)
@@ -38,51 +44,119 @@ class MainClientPage(QWidget,QColor):
         s.connect((host, port))
         print(s.recv(1024))
     
-    def main_window(self):   
-        self.setGeometry(750,200,450,350)
+    def main_window(self):  
+        self.setFixedHeight(550)
+        self.setFixedWidth(700) 
+
+        self.fill_form=QLabel("Fill form below to establish connection")
+        self.fill_form.setStyleSheet("margin-bottom: 20")
+        self.fill_form.setFont(QFont("Serif",20,QFont.Weight.DemiBold))
+        self.fill_form.setProperty("class","label_fill")
+        self.setProperty("class","main")
+        
+       
+
         self.vbox=QVBoxLayout()
+        self.vbox.setAlignment(Qt.AlignmentFlag.AlignAbsolute)
+
+        self.vbox.addStretch()
+        self.vbox.setSpacing(0)
+
+        self.name_user=QLabel("Name")
+        self.name_user.setStyleSheet("margin-bottom: 5")
+        self.name_user.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.name_user.setProperty("class","label_cons")
+
+        self.connect_password=QLabel("Connection Password",self)
+        self.connect_password.setStyleSheet("margin-bottom: 5")
+        self.connect_password.setProperty("class","label_cons")
+
+        self.main_password=QLabel("Main User Account Password",self)
+        self.main_password.setStyleSheet("margin-bottom: 5")
+        self.main_password.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.main_password.setProperty("class","label_cons")
+
+        self.ip_server=QLabel("IP Address",self)
+        self.ip_server.setStyleSheet("margin-bottom: 5")
+        self.ip_server.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.ip_server.setProperty("class","label_cons")
+
 
         self.new_client_user=QLineEdit()
-        self.new_client_user.setFixedHeight(35)
-        self.setProperty("class","main")
+        self.new_client_user.setFixedHeight(55)
+        self.new_client_user.setFixedWidth(350)
+        self.new_client_user.setProperty("class","server_input")
+        self.new_client_user.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
         self.new_client_user.setPlaceholderText(" Name of new user")
         
         self.new_client_password=QLineEdit()
-        self.new_client_password.setFixedHeight(35)
+        self.new_client_password.setFixedHeight(55)
+        self.new_client_password.setFixedWidth(350)
+        self.new_client_password.setProperty("class","server_input")
+        self.new_client_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
         self.new_client_password.setPlaceholderText(" Password")
         self.new_client_password.setEchoMode(QLineEdit.EchoMode.Password)
 
         self.server_ip=QLineEdit()
-        self.server_ip.setFixedHeight(35)
+        self.server_ip.setFixedHeight(55)
+        self.server_ip.setFixedWidth(350)
+        self.server_ip.setProperty("class","server_input")
+        self.server_ip.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
         self.server_ip.setPlaceholderText(" Server IP Address")
 
         self.main_user_account_password=QLineEdit()
-        self.main_user_account_password.setFixedHeight(35)
+        self.main_user_account_password.setFixedHeight(55)
+        self.main_user_account_password.setFixedWidth(350)
+        self.main_user_account_password.setProperty("class","server_input")
+        self.main_user_account_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
         self.main_user_account_password.setPlaceholderText(" Main user account password")
         self.main_user_account_password.setEchoMode(QLineEdit.EchoMode.Password)
-        self.main_user_account_password.setProperty("class","server_input")
+        
 
         ip_address="(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
         regex_ip=QRegularExpression("^" + ip_address + "\\." + ip_address + "\\." + ip_address + "\\." + ip_address + "$")
         ipValidator=QRegularExpressionValidator(regex_ip, self) 
         self.server_ip.setValidator(ipValidator)
 
-        self.client=QPushButton("Begin Process",self)
-        self.client.setStyleSheet('background-color: green')
-        self.client.setFixedHeight(50)
+        self.client=QPushButton("Connect",self)
+        self.client.setProperty("class","continued")
+        self.client.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
+        self.client.setFixedHeight(40)
+        self.client.setFixedWidth(150)
         self.client.clicked.connect(self.proceed)
 
 
-        self.exit=QPushButton("Exit",self)
-        self.exit.setStyleSheet('background-color: red')
-        self.exit.setFixedHeight(50)
+        self.exit=QPushButton("Cancel",self)
+        self.exit.setProperty("class","cancel")
+        self.exit.setFixedHeight(40)
+        self.exit.setFixedWidth(150)
+        self.exit.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
         
+        self.vbox.addWidget(self.fill_form)
+        
+        self.vbox.addWidget(self.name_user)
         self.vbox.addWidget(self.new_client_user)
+
+        self.vbox.addWidget(self.connect_password)
         self.vbox.addWidget(self.new_client_password)
+        
+        self.vbox.addWidget(self.ip_server)
         self.vbox.addWidget(self.server_ip)
+
+        self.vbox.addWidget(self.main_password)
         self.vbox.addWidget(self.main_user_account_password)
-        self.vbox.addWidget(self.client)
-        self.vbox.addWidget(self.exit)
+
+        
+
+
+        self.hbox=QHBoxLayout()
+        self.hbox.addWidget(self.exit)
+        self.hbox.addWidget(self.client)
+        
+
+        self.vbox.addLayout(self.hbox)
+
+        self.vbox.addStretch(0)
         self.setLayout(self.vbox)
 
         try:
