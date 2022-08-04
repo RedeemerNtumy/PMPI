@@ -84,12 +84,14 @@
 }
 
 .continued{
+  
     background-color:#004ADB;
     border-radius: 9px;
    
       
 }
 .cancel{
+   
     border:2px solid #004ADB;
     background-color:white;
     border-radius: 9px;

@@ -91,7 +91,8 @@ class MainServerPage(QWidget,QColor):
         self.setProperty("class","main")
 
         self.gbox=QGridLayout()
-        self.gbox.setSpacing(0)
+        # self.gbox.setSpacing(0)
+        
 
         
         
@@ -153,7 +154,7 @@ class MainServerPage(QWidget,QColor):
         self.choose_file=QPushButton("Choose File")
         self.choose_file.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
         self.choose_file.setProperty("class","cancel")
-        self.choose_file.setFixedHeight(45)
+        self.choose_file.setFixedHeight(55)
         self.choose_file.setFixedWidth(350)
         self.choose_file.clicked.connect(self.showFileDialog)
         
