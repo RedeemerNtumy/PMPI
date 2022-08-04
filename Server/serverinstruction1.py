@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog,QLabel
+from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog,QLabel,QSizePolicy
 from PyQt6.QtGui import QColor,QMovie,QIntValidator,QRegularExpressionValidator,QGuiApplication,QFont
 import sys
 import os
@@ -92,6 +92,8 @@ class MainServerPage(QWidget,QColor):
 
         self.gbox=QGridLayout()
         self.gbox.setSpacing(0)
+
+        
         
         self.fill_form=QLabel("Fill form below to establish connection")
         self.fill_form.setFont(QFont("Serif",20,QFont.Weight.DemiBold))
@@ -114,7 +116,9 @@ class MainServerPage(QWidget,QColor):
         self.ip_client=QLabel("IP Address")
         self.ip_client.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
         self.ip_client.setProperty("class","label_cons")
+
         
+
         self.connect_password=QLabel("Connection Password",self)
         self.connect_password.setProperty("class","label_cons")
 
@@ -155,7 +159,7 @@ class MainServerPage(QWidget,QColor):
         
 
         self.type_of_code=QComboBox()
-        self.type_of_code.setFixedHeight(100)
+        self.type_of_code.setFixedHeight(55)
         self.type_of_code.setFixedWidth(350)
         self.type_of_code.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
         self.type_of_code.setProperty("class","combo_tins")
@@ -171,7 +175,7 @@ class MainServerPage(QWidget,QColor):
         self.number_of_ranks.setProperty("class","server_input")
 
         self.ssh_key=QComboBox()
-        self.ssh_key.setFixedHeight(100)
+        self.ssh_key.setFixedHeight(55)
         self.ssh_key.setFixedWidth(350)
         self.ssh_key.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
         self.ssh_key.setProperty("class","combo_tins")
@@ -245,7 +249,7 @@ class MainServerPage(QWidget,QColor):
         self.gbox.addWidget(self.exit,9,0)
         self.gbox.addWidget(self.server,9,1)
 
-        self.gbox.setRowStretch(7, 0)
+        
         self.setLayout(self.gbox)
     
         try:
