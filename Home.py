@@ -46,7 +46,7 @@ class Window(QWidget,QColor):
         self.btn_start.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
         self.btn_start.setProperty("class","get_started")
 
-        self.btn_start.setFixedHeight(45)
+        self.btn_start.setFixedHeight(40)
         self.btn_start.setFixedWidth(380)
         
         self.vbox.addWidget(self.label_start)

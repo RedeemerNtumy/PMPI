@@ -5,8 +5,6 @@
    
 }
 .server_input{
-    margin-bottom: 0;
-    margin-top: 0;
     background-color:white;
     color: rgb(123, 156, 222);
     
@@ -35,21 +33,15 @@
 .label_fill{
     color: #004ADB;
     font-style: bold;
-    margin-bottom: 10;
     
 }
 .label_cont{
     color: black;
     margin-bottom: 25;
 
-
-
 }
 .label_cons{
     color: rgba(48, 50, 55, 0.805);
-    margin: 0;
-
-
 
 }
 .combo_cont{
@@ -64,7 +56,6 @@
     
 }
 .combo_tins{
-    margin-bottom: 0;
     padding-left: 10;
     border-radius: 5px;
     background-color: white;

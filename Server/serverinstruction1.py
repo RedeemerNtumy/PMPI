@@ -86,14 +86,12 @@ class MainServerPage(QWidget,QColor):
       
     def main_window(self):
         
-        self.setFixedHeight(700)
+        self.setFixedHeight(550) #Can change depending on screen
         self.setFixedWidth(1000)
         self.setProperty("class","main")
 
         self.gbox=QGridLayout()
-        # self.gbox.setSpacing(0)
-        
-
+        self.gbox.setRowStretch(self.gbox.rowCount()-1, 0)
         
         
         self.fill_form=QLabel("Fill form below to establish connection")
@@ -110,15 +108,10 @@ class MainServerPage(QWidget,QColor):
         self.new_server_user.setFixedWidth(350)
         self.new_server_user.setPlaceholderText(" Name of new user")
         self.new_server_user.setProperty("class","server_input")
-        # self.new_server_user.setText("Yes")
-        # something=self.new_server_user.text()
-        # os.environ(something)
 
         self.ip_client=QLabel("IP Address")
         self.ip_client.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
         self.ip_client.setProperty("class","label_cons")
-
-        
 
         self.connect_password=QLabel("Connection Password",self)
         self.connect_password.setProperty("class","label_cons")
@@ -158,7 +151,6 @@ class MainServerPage(QWidget,QColor):
         self.choose_file.setFixedWidth(350)
         self.choose_file.clicked.connect(self.showFileDialog)
         
-
         self.type_of_code=QComboBox()
         self.type_of_code.setFixedHeight(55)
         self.type_of_code.setFixedWidth(350)
@@ -205,7 +197,7 @@ class MainServerPage(QWidget,QColor):
 
         self.exit=QPushButton("Cancel",self)
         self.exit.setProperty("class","cancel")
-        self.exit.setFixedHeight(45)
+        self.exit.setFixedHeight(40)
         self.exit.setFixedWidth(350)
         self.exit.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
         
@@ -215,7 +207,7 @@ class MainServerPage(QWidget,QColor):
         self.server=QPushButton("Establish Connection",self)
         self.server.setProperty("class","continued")
         self.server.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
-        self.server.setFixedHeight(45)
+        self.server.setFixedHeight(40)
         self.server.setFixedWidth(350)
         self.server.clicked.connect(self.proceed)
 
@@ -250,7 +242,7 @@ class MainServerPage(QWidget,QColor):
         self.gbox.addWidget(self.exit,9,0)
         self.gbox.addWidget(self.server,9,1)
 
-        
+
         self.setLayout(self.gbox)
     
         try:
