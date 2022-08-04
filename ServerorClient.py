@@ -56,7 +56,7 @@ class ChooseWindow(QWidget,QColor):
         self.continued=QPushButton("Continue",self)
         self.continued.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
         self.continued.setProperty("class","continued")
-        self.continued.setFixedHeight(50)
+        self.continued.setFixedHeight(45)
         self.continued.setFixedWidth(350)
 
         self.vbox.addWidget(self.device_type)

@@ -4,6 +4,13 @@
     margin-bottom: 5;
    
 }
+.server_input{
+    margin-bottom: 0;
+    margin-top: 0;
+    background-color:white;
+    color: rgb(123, 156, 222);
+    
+}
 .client_button{
     background-color: rgb(31, 71, 232);
     border-radius: 20px;
@@ -25,9 +32,22 @@
     margin-bottom: 50;
     
 }
+.label_fill{
+    color: #004ADB;
+    font-style: bold;
+    margin-bottom: 20;
+    
+}
 .label_cont{
     color: black;
     margin-bottom: 25;
+
+
+
+}
+.label_cons{
+    color: rgba(48, 50, 55, 0.805);
+    margin: 0;
 
 
 
@@ -43,6 +63,17 @@
     
     
 }
+.combo_tins{
+    margin-bottom: 50;
+    padding-left: 10;
+    border-radius: 5px;
+    background-color: white;
+    color:rgb(123, 156, 222);
+    background-color: white;
+    border: 1px solid rgb(123, 156, 222);
+    
+    
+}
 
 .get_started{
     background-color:#004ADB;
@@ -51,16 +82,20 @@
     
     
 }
-.line_edit{
-    border:5px solid #004ADB;
-    
-    
-}
+
 .continued{
     background-color:#004ADB;
     border-radius: 9px;
+   
+      
+}
+.cancel{
+    border:2px solid #004ADB;
+    background-color:white;
+    border-radius: 9px;
+    color: #004ADB;
+  
     
-    
-    
+      
 }
 

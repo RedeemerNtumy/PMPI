@@ -10,6 +10,8 @@ import socket
 import subprocess
 
 
+
+
 class loading_screen(QWidget):
     def __init__(self):     
         super().__init__() 
@@ -90,18 +92,17 @@ class MainServerPage(QWidget,QColor):
 
         self.gbox=QGridLayout()
         self.gbox.setSpacing(0)
-        self.gbox.setProperty("class","server_layout")
         
         self.fill_form=QLabel("Fill form below to establish connection")
         self.fill_form.setFont(QFont("Serif",20,QFont.Weight.DemiBold))
-        self.fill_form.setProperty("class","label_select")
+        self.fill_form.setProperty("class","label_fill")
         
         self.name_server=QLabel("Name",self)
-        self.name_server.setProperty("class","label_cont")
+        self.name_server.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.name_server.setProperty("class","label_cons")
         
         self.new_server_user=QLineEdit()
-        self.new_server_user.setStyleSheet("border: 1px solid #004ADB;\n border-radius:5px")
-        # self.new_server_user.setProperty("class","line_edit")
+        self.new_server_user.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
         self.new_server_user.setFixedHeight(55)
         self.new_server_user.setFixedWidth(350)
         self.new_server_user.setPlaceholderText(" Name of new user")
@@ -111,28 +112,34 @@ class MainServerPage(QWidget,QColor):
         # os.environ(something)
 
         self.ip_client=QLabel("IP Address")
-        self.ip_client.setProperty("class","label_cont")
+        self.ip_client.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.ip_client.setProperty("class","label_cons")
         
         self.connect_password=QLabel("Connection Password",self)
-        self.connect_password.setProperty("class","label_cont")
+        self.connect_password.setProperty("class","label_cons")
 
         self.mpi_file=QLabel("MPI File",self)
-        self.mpi_file.setProperty("class","label_cont")
+        self.mpi_file.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.mpi_file.setProperty("class","label_cons")
 
         self.main_password=QLabel("Main User Account Password",self)
-        self.main_password.setProperty("class","label_cont")
+        self.main_password.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.main_password.setProperty("class","label_cons")
 
         self.mpi_code=QLabel("MPI Code",self)
-        self.mpi_code.setProperty("class","label_cont")
+        self.mpi_code.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.mpi_code.setProperty("class","label_cons")
 
         self.hosts=QLabel("Hosts",self)
-        self.hosts.setProperty("class","label_cont")
+        self.hosts.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.hosts.setProperty("class","label_cons")
 
         self.ssh_key_label= QLabel("SSH Key",self)
-        self.ssh_key_label.setProperty("class","label_cont")
+        self.ssh_key_label.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.ssh_key_label.setProperty("class","label_cons")
 
         self.new_server_password=QLineEdit()
-        self.new_server_password.setStyleSheet("border: 1px solid #004ADB;\n border-radius:5px")
+        self.new_server_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
         self.new_server_password.setFixedHeight(55)
         self.new_server_password.setFixedWidth(350)
         self.new_server_password.setPlaceholderText(" Password")
@@ -140,19 +147,23 @@ class MainServerPage(QWidget,QColor):
         self.new_server_password.setProperty("class","server_input")
 
         self.choose_file=QPushButton("Choose File")
-        self.choose_file.setFixedHeight(35)
+        self.choose_file.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
+        self.choose_file.setProperty("class","cancel")
+        self.choose_file.setFixedHeight(45)
+        self.choose_file.setFixedWidth(350)
         self.choose_file.clicked.connect(self.showFileDialog)
+        
 
         self.type_of_code=QComboBox()
         self.type_of_code.setFixedHeight(100)
         self.type_of_code.setFixedWidth(350)
         self.type_of_code.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
-        self.type_of_code.setProperty("class","combo_cont")
+        self.type_of_code.setProperty("class","combo_tins")
         self.type_of_code.addItems(["Type of MPI Code","C","C++"])
         self.type_of_code.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
 
         self.number_of_ranks=QLineEdit()
-        self.number_of_ranks.setStyleSheet("border: 1px solid #004ADB;\n border-radius:5px")
+        self.number_of_ranks.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
         self.number_of_ranks.setFixedHeight(55)
         self.number_of_ranks.setFixedWidth(350)
         self.number_of_ranks.setPlaceholderText(" Number of ranks")
@@ -163,19 +174,19 @@ class MainServerPage(QWidget,QColor):
         self.ssh_key.setFixedHeight(100)
         self.ssh_key.setFixedWidth(350)
         self.ssh_key.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
-        self.ssh_key.setProperty("class","combo_cont")
+        self.ssh_key.setProperty("class","combo_tins")
         self.ssh_key.addItems(["Type of ssh key","RSA","DSA"])
         self.ssh_key.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
         
         self.client_ip=QLineEdit()
-        self.client_ip.setStyleSheet("border: 1px solid #004ADB;\n border-radius:5px")
+        self.client_ip.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
         self.client_ip.setFixedHeight(55)
         self.client_ip.setFixedWidth(350)
         self.client_ip.setPlaceholderText(" Client IP Address")
         self.client_ip.setProperty("class","server_input")
 
         self.main_user_account_password=QLineEdit()
-        self.main_user_account_password.setStyleSheet("border: 1px solid #004ADB;\n border-radius:5px")
+        self.main_user_account_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
         self.main_user_account_password.setFixedHeight(55)
         self.main_user_account_password.setFixedWidth(350)
         self.main_user_account_password.setPlaceholderText(" Main user account password")
@@ -188,13 +199,18 @@ class MainServerPage(QWidget,QColor):
         self.client_ip.setValidator(ipValidator)
 
         self.exit=QPushButton("Cancel",self)
-        self.exit.setFixedHeight(35)
-        self.exit.setStyleSheet('background-color: red')
+        self.exit.setProperty("class","cancel")
+        self.exit.setFixedHeight(45)
+        self.exit.setFixedWidth(350)
+        self.exit.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
+        
+
+        
 
         self.server=QPushButton("Establish Connection",self)
         self.server.setProperty("class","continued")
         self.server.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
-        self.server.setFixedHeight(50)
+        self.server.setFixedHeight(45)
         self.server.setFixedWidth(350)
         self.server.clicked.connect(self.proceed)
 
@@ -229,7 +245,7 @@ class MainServerPage(QWidget,QColor):
         self.gbox.addWidget(self.exit,9,0)
         self.gbox.addWidget(self.server,9,1)
 
-
+        self.gbox.setRowStretch(7, 0)
         self.setLayout(self.gbox)
     
         try:
@@ -252,10 +268,10 @@ class MainServerPage(QWidget,QColor):
             self.choose_file.setText(file_name)
             if ".c++" in file_name:
                 self.type_of_code.setCurrentText("C++")
-                self.choose_file.setStyleSheet("background-color: green")
+                self.choose_file.setStyleSheet("background-color:#004ADB;\n color: white;")
             elif ".c" in file_name:
                 self.type_of_code.setCurrentText("C")
-                self.choose_file.setStyleSheet("background-color: green")
+                self.choose_file.setStyleSheet("background-color:#004ADB;\n color: white;")
             else:
                 self.choose_file.setText("Choose File")
                 self.invalid_file()
