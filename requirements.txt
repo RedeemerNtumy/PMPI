@@ -3,4 +3,6 @@ PyQt6==6.3.0
 PyQt6-Qt6==6.3.0
 PyQt6-sip==13.3.1
 regex==2022.3.15
+paramiko==2.11.0
+keyboard==0.13.5
 

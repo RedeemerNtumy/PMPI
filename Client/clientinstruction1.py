@@ -28,7 +28,7 @@ class MainClientPage(QWidget,QColor):
         qr=self.frameGeometry()
         cp=QGuiApplication.primaryScreen().availableGeometry().center()
         qr.moveCenter(cp)
-        self.move(qr.topLeft()) 
+        self.move(qr.center())
         
     def disconnected(self):
         msg=QMessageBox(self)
@@ -45,9 +45,7 @@ class MainClientPage(QWidget,QColor):
         print(s.recv(1024))
     
     def main_window(self):  
-        self.setFixedHeight(550)
-        self.setFixedWidth(700) 
-
+       
         self.fill_form=QLabel("Fill form below to establish connection")
         self.fill_form.setStyleSheet("margin-bottom: 20")
         self.fill_form.setFont(QFont("Serif",20,QFont.Weight.DemiBold))
@@ -64,34 +62,35 @@ class MainClientPage(QWidget,QColor):
 
         self.name_user=QLabel("Name")
         self.name_user.setStyleSheet("margin-bottom: 5")
-        self.name_user.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.name_user.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.name_user.setProperty("class","label_cons")
 
         self.connect_password=QLabel("Connection Password",self)
+        self.connect_password.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.connect_password.setStyleSheet("margin-bottom: 5")
         self.connect_password.setProperty("class","label_cons")
 
         self.main_password=QLabel("Main User Account Password",self)
         self.main_password.setStyleSheet("margin-bottom: 5")
-        self.main_password.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.main_password.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.main_password.setProperty("class","label_cons")
 
         self.ip_server=QLabel("IP Address",self)
         self.ip_server.setStyleSheet("margin-bottom: 5")
-        self.ip_server.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.ip_server.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.ip_server.setProperty("class","label_cons")
 
 
         self.new_client_user=QLineEdit()
         self.new_client_user.setFixedHeight(55)
-        self.new_client_user.setFixedWidth(350)
+        self.new_client_user.setFixedWidth(650)
         self.new_client_user.setProperty("class","server_input")
         self.new_client_user.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
         self.new_client_user.setPlaceholderText(" Name of new user")
         
         self.new_client_password=QLineEdit()
         self.new_client_password.setFixedHeight(55)
-        self.new_client_password.setFixedWidth(350)
+        self.new_client_password.setFixedWidth(650)
         self.new_client_password.setProperty("class","server_input")
         self.new_client_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
         self.new_client_password.setPlaceholderText(" Password")
@@ -99,14 +98,14 @@ class MainClientPage(QWidget,QColor):
 
         self.server_ip=QLineEdit()
         self.server_ip.setFixedHeight(55)
-        self.server_ip.setFixedWidth(350)
+        self.server_ip.setFixedWidth(650)
         self.server_ip.setProperty("class","server_input")
         self.server_ip.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
         self.server_ip.setPlaceholderText(" Server IP Address")
 
         self.main_user_account_password=QLineEdit()
         self.main_user_account_password.setFixedHeight(55)
-        self.main_user_account_password.setFixedWidth(350)
+        self.main_user_account_password.setFixedWidth(650)
         self.main_user_account_password.setProperty("class","server_input")
         self.main_user_account_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
         self.main_user_account_password.setPlaceholderText(" Main user account password")
@@ -124,7 +123,7 @@ class MainClientPage(QWidget,QColor):
         self.client.setFixedHeight(40)
         self.client.setFixedWidth(150)
         self.client.clicked.connect(self.proceed)
-
+        self.space1=QLabel("    ",self)
 
         self.exit=QPushButton("Cancel",self)
         self.exit.setProperty("class","cancel")
@@ -135,17 +134,17 @@ class MainClientPage(QWidget,QColor):
         self.vbox.addWidget(self.fill_form)
         
         self.vbox.addWidget(self.name_user)
-        self.vbox.addWidget(self.new_client_user)
+        self.vbox.addWidget(self.new_client_user,alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.vbox.addWidget(self.connect_password)
-        self.vbox.addWidget(self.new_client_password)
+        self.vbox.addWidget(self.new_client_password,alignment=Qt.AlignmentFlag.AlignCenter)
         
         self.vbox.addWidget(self.ip_server)
-        self.vbox.addWidget(self.server_ip)
+        self.vbox.addWidget(self.server_ip,alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.vbox.addWidget(self.main_password)
-        self.vbox.addWidget(self.main_user_account_password)
-
+        self.vbox.addWidget(self.main_user_account_password,alignment=Qt.AlignmentFlag.AlignCenter)
+        self.vbox.addWidget(self.space1)
         
 
 
@@ -201,7 +200,7 @@ class MainClientPage(QWidget,QColor):
 
     def client1(self):  
         self.client01=MainClientPage()                                         
-        self.client01.show()
+        self.client01.showFullScreen()
 
 
 if __name__ == "__main__":

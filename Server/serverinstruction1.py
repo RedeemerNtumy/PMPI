@@ -29,13 +29,13 @@ class loading_screen(QWidget):
         # self.setGeometry(625,420,450,350)
 
         self.start_animation()
-        self.show()
+        self.showFullScreen()
 
     def center(self):
         qr=self.frameGeometry()
         cp=QGuiApplication.primaryScreen().availableGeometry().center()
         qr.moveCenter(cp)
-        self.move(qr.topLeft()) 
+        self.move(qr.center())
 
     def start_animation(self):
         self.movie.start()
@@ -99,7 +99,7 @@ class MainServerPage(QWidget,QColor):
         self.fill_form.setProperty("class","label_fill")
         
         self.name_server=QLabel("Name",self)
-        self.name_server.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.name_server.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.name_server.setProperty("class","label_cons")
         
         self.new_server_user=QLineEdit()
@@ -110,30 +110,31 @@ class MainServerPage(QWidget,QColor):
         self.new_server_user.setProperty("class","server_input")
 
         self.ip_client=QLabel("IP Address")
-        self.ip_client.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.ip_client.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.ip_client.setProperty("class","label_cons")
 
         self.connect_password=QLabel("Connection Password",self)
+        self.connect_password.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.connect_password.setProperty("class","label_cons")
 
         self.mpi_file=QLabel("MPI File",self)
-        self.mpi_file.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.mpi_file.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.mpi_file.setProperty("class","label_cons")
 
         self.main_password=QLabel("Main User Account Password",self)
-        self.main_password.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.main_password.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.main_password.setProperty("class","label_cons")
 
         self.mpi_code=QLabel("MPI Code",self)
-        self.mpi_code.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.mpi_code.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.mpi_code.setProperty("class","label_cons")
 
         self.hosts=QLabel("Hosts",self)
-        self.hosts.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.hosts.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.hosts.setProperty("class","label_cons")
 
         self.ssh_key_label= QLabel("SSH Key",self)
-        self.ssh_key_label.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.ssh_key_label.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.ssh_key_label.setProperty("class","label_cons")
 
         self.space1=QLabel("    ",self)
@@ -160,7 +161,7 @@ class MainServerPage(QWidget,QColor):
         self.type_of_code.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
         self.type_of_code.setProperty("class","combo_tins")
         self.type_of_code.addItems(["Type of MPI Code","C","C++"])
-        self.type_of_code.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.type_of_code.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
 
         self.number_of_ranks=QLineEdit()
         self.number_of_ranks.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
@@ -176,7 +177,7 @@ class MainServerPage(QWidget,QColor):
         self.ssh_key.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
         self.ssh_key.setProperty("class","combo_tins")
         self.ssh_key.addItems(["Type of ssh key","RSA","DSA"])
-        self.ssh_key.setFont(QFont("Serif",14,QFont.Weight.ExtraLight))
+        self.ssh_key.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         
         self.client_ip=QLineEdit()
         self.client_ip.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
@@ -371,7 +372,7 @@ class MainServerPage(QWidget,QColor):
      
     def server1(self):  
         self.server01=MainServerPage()                                         
-        self.server01.show()
+        self.server01.showFullScreen()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

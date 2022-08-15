@@ -69,7 +69,9 @@
 .get_started{
     background-color:#004ADB;
     border-radius: 9px;
-    margin-left: 60;
+    color: white;
+    
+  
     
     
 }
@@ -78,6 +80,7 @@
   
     background-color:#004ADB;
     border-radius: 9px;
+    color: white;
    
       
 }
