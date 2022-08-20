@@ -8,7 +8,7 @@ import ServerorClient
 class Window(QWidget,QColor):
     def __init__(self):
         super().__init__()
-        self.showFullScreen()
+        self.show()
         self.main_window()
 
     def center(self):

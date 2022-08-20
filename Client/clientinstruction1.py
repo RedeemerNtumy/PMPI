@@ -200,7 +200,7 @@ class MainClientPage(QWidget,QColor):
 
     def client1(self):  
         self.client01=MainClientPage()                                         
-        self.client01.showFullScreen()
+        self.client01.show()
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtCore import Qt,QRegularExpression
 import socket
 import subprocess
-
+from pyfstab import Fstab
 
 
 
@@ -29,7 +29,7 @@ class loading_screen(QWidget):
         # self.setGeometry(625,420,450,350)
 
         self.start_animation()
-        self.showFullScreen()
+        self.show()
 
     def center(self):
         qr=self.frameGeometry()
@@ -338,23 +338,18 @@ class MainServerPage(QWidget,QColor):
                 button=msg.exec()
                 if button==QMessageBox.StandardButton.Yes:
                     self.load.show()
-                    # new_user_process=subprocess.Popen(f"sudo adduser {self.new_server_user.text()}").communicate()[0]
-                    # new_user_process.stdin.write(f"{self.main_user_account_password.text()}").communicate()[0]
-                    # new_user_process.stdin.close()
 
-                    # try: 
-                    #     host_name=socket.getfqdn()
-                    #     ip=socket.gethostbyname(host_name)
-                    # except:
-                    #     ip="Disconnected"
-                    # if ip=="Disconnected":
-                    #     self.disconnected()
-
-
-                    # "{ip}"
-                    # process=subprocess.Popen(f'bash setup.sh "{self.new_server_user.text()}" "{self.new_server_password.text()}" "{self.main_user_account_password.text()}" "{fileName}" "{self.ssh_key.currentText()}" "{self.type_of_code.currentText()}" "{self.client_ip.text()}"',shell=True)
-     
-                    # process.communicate()[0]
+                    #wait for client PC to connect
+                    try:
+                        subprocess.Popen("rm -d default",shell=True).communicate()[0]
+                    except:
+                        pass
+                    subprocess.Popen("mkdir default",shell=True).communicate()[0]
+                    
+                    with open("/etc/fstab","w") as f:
+                        f.write("\n#/home/iamdveloper/Dekstop/default *(rw,sync,no_root_squah,no_subtree_check")
+                    subprocess.Popen("sudo exportfs -a",shell=True).communicate()[0]
+                    
                     
                     
                     
@@ -372,7 +367,7 @@ class MainServerPage(QWidget,QColor):
      
     def server1(self):  
         self.server01=MainServerPage()                                         
-        self.server01.showFullScreen()
+        self.server01.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

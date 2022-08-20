@@ -1,4 +1,3 @@
-from turtle import color
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QComboBox,QMessageBox
 from PyQt6.QtGui import QColor,QFont,QGuiApplication
 from PyQt6.QtCore import Qt
@@ -76,13 +75,13 @@ class ChooseWindow(QWidget,QColor):
 
     def serverclient(self):  
         self.serclient=ChooseWindow()                                         
-        self.serclient.showFullScreen()
+        self.serclient.show()
 
     def proceed(self):
         if self.type_of_device.currentText()=="Server":
-            self.chooseWindow1.showFullScreen()
+            self.chooseWindow1.show()
         elif self.type_of_device.currentText()=="Client":
-            self.chooseWindow2.showFullScreen()
+            self.chooseWindow2.show()
             
         else:
             msg=QMessageBox(self)
