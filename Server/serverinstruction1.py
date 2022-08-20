@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QGridLayout,QComboBox,QFileDialog,QLabel
+from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QLineEdit,QVBoxLayout,QHBoxLayout,QComboBox,QFileDialog,QLabel
 from PyQt6.QtGui import QColor,QMovie,QIntValidator,QRegularExpressionValidator,QGuiApplication,QFont
 import sys
 import os
@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtCore import Qt,QRegularExpression
 import socket
 import subprocess
-from pyfstab import Fstab
+import pwd
 
 
 
@@ -86,19 +86,21 @@ class MainServerPage(QWidget,QColor):
       
     def main_window(self):
         
-        self.setFixedHeight(700) #Can change depending on screen
-        self.setFixedWidth(1000)
         self.setProperty("class","main")
 
-        self.gbox=QGridLayout()
-        self.gbox.setRowStretch(self.gbox.rowCount()-1, 0)
+        self.vbox=QVBoxLayout()
+        self.vbox.setAlignment(Qt.AlignmentFlag.AlignAbsolute)
+
+        self.vbox.addStretch()
+        self.vbox.setSpacing(0)
+        
         
         
         self.fill_form=QLabel("Fill form below to establish connection")
         self.fill_form.setFont(QFont("Serif",20,QFont.Weight.DemiBold))
         self.fill_form.setProperty("class","label_fill")
         
-        self.name_server=QLabel("Name",self)
+        self.name_server=QLabel("Username",self)
         self.name_server.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.name_server.setProperty("class","label_cons")
         
@@ -106,24 +108,19 @@ class MainServerPage(QWidget,QColor):
         self.new_server_user.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
         self.new_server_user.setFixedHeight(55)
         self.new_server_user.setFixedWidth(350)
-        self.new_server_user.setPlaceholderText(" Name of new user")
+        self.new_server_user.setPlaceholderText("Username of this PC")
         self.new_server_user.setProperty("class","server_input")
 
         self.ip_client=QLabel("IP Address")
         self.ip_client.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.ip_client.setProperty("class","label_cons")
 
-        self.connect_password=QLabel("Connection Password",self)
-        self.connect_password.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
-        self.connect_password.setProperty("class","label_cons")
+       
 
         self.mpi_file=QLabel("MPI File",self)
         self.mpi_file.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.mpi_file.setProperty("class","label_cons")
 
-        self.main_password=QLabel("Main User Account Password",self)
-        self.main_password.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
-        self.main_password.setProperty("class","label_cons")
 
         self.mpi_code=QLabel("MPI Code",self)
         self.mpi_code.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
@@ -133,9 +130,6 @@ class MainServerPage(QWidget,QColor):
         self.hosts.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.hosts.setProperty("class","label_cons")
 
-        self.ssh_key_label= QLabel("SSH Key",self)
-        self.ssh_key_label.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
-        self.ssh_key_label.setProperty("class","label_cons")
 
         self.space1=QLabel("    ",self)
         self.space2=QLabel("    ",self)
@@ -218,39 +212,31 @@ class MainServerPage(QWidget,QColor):
         self.load=loading_screen()
         self.load.hide()
         
-        self.gbox.addWidget(self.fill_form,0,0)
-        self.gbox.addWidget(self.name_server,1,0)
-        self.gbox.addWidget(self.new_server_user,2,0)
-        
-        self.gbox.addWidget(self.ip_client,1,1)
-        self.gbox.addWidget(self.client_ip,2,1)
+        self.vbox.addWidget(self.fill_form)
 
-        self.gbox.addWidget(self.connect_password,3,0)
-        self.gbox.addWidget(self.new_server_password,4,0)
+        self.vbox.addWidget(self.ip_client)
+        self.vbox.addWidget(self.client_ip)
 
-        self.gbox.addWidget(self.mpi_file,3,1)
-        self.gbox.addWidget(self.choose_file,4,1)
+        self.vbox.addWidget(self.mpi_file)
+        self.vbox.addWidget(self.choose_file)
+
+        self.vbox.addWidget(self.hosts)
+        self.vbox.addWidget(self.number_of_ranks)
     
-        self.gbox.addWidget(self.main_password,5,0)
-        self.gbox.addWidget(self.main_user_account_password,6,0)
 
-        self.gbox.addWidget(self.mpi_code,5,1)
-        self.gbox.addWidget(self.type_of_code,6,1)
+        self.vbox.addWidget(self.space1)
 
-        self.gbox.addWidget(self.hosts,7,0)
-        self.gbox.addWidget(self.number_of_ranks,8,0)
+        self.hbox=QHBoxLayout()
+        self.hbox.addWidget(self.exit)
+        self.hbox.addWidget(self.server)
 
-        self.gbox.addWidget(self.ssh_key_label,7,1)
-        self.gbox.addWidget(self.ssh_key,8,1)
-
-        self.gbox.addWidget(self.space1,9,0)
-        self.gbox.addWidget(self.space2,9,1)
-        
-        self.gbox.addWidget(self.exit,10,0)
-        self.gbox.addWidget(self.server,10,1)
+       
 
 
-        self.setLayout(self.gbox)
+        self.vbox.addLayout(self.hbox)
+
+        self.vbox.addStretch(0)
+        self.setLayout(self.vbox)
     
         try:
             self.exit.clicked.connect(self.close)
@@ -306,32 +292,21 @@ class MainServerPage(QWidget,QColor):
             report.setStandardButtons(QMessageBox.StandardButton.Ok)
             report.exec()
 
-        if len(self.new_server_user.text())==0:
-            report(self,text="Name of new user is empty")
 
-        elif len(self.new_server_password.text())==0:
-            report(self,text="Please input a password")
-
-        elif self.type_of_code.currentText()=="Type of MPI Code":
-            report(self,text="Please choose the type of MPI Code")
-
-        elif self.ssh_key.currentText()=="Type of ssh key":
-            report(self,text="Please specify ssh key")
-
-        elif len(self.number_of_ranks.text())==0:
+        if len(self.number_of_ranks.text())==0:
             report(self,text="Please input number of ranks")
 
-        elif len(self.client_ip.text())==0:
+        if len(self.client_ip.text())==0:
             report(self,text="Please input Client IP Address")
 
-        elif self.client_ip.text().count(".") < 3:
+        if self.client_ip.text().count(".") < 3:
             report(self,text="Incomplete Client IP Address")
         else:
             try:
                 msg=QMessageBox(self)
                 msg.setWindowTitle("Review Details")
                 msg.setText("These details will be used to create the MPI cluster. Proceed?")
-                msg.setInformativeText(f"Name of user : {self.new_server_user.text()}\nChosen file : {fileName}\nType of MPI Code : {self.type_of_code.currentText()}\nType of ssh key : {self.ssh_key.currentText()}\nNumber of ranks : {self.number_of_ranks.text()}\nClient IP Address : {self.client_ip.text()}")
+                msg.setInformativeText(f"Chosen file : {fileName}\nNumber of ranks : {self.number_of_ranks.text()}\nClient IP Address : {self.client_ip.text()}")
     
                 msg.setIcon(QMessageBox.Icon.Information)
                 msg.setStandardButtons(QMessageBox.StandardButton.No|QMessageBox.StandardButton.Yes)
@@ -343,11 +318,12 @@ class MainServerPage(QWidget,QColor):
                     try:
                         subprocess.Popen("rm -d default",shell=True).communicate()[0]
                     except:
-                        pass
-                    subprocess.Popen("mkdir default",shell=True).communicate()[0]
+                        print("No default directory")
+                    subprocess.Popen("cd ..;cd ..;mkdir default",shell=True).communicate()[0]
                     
-                    with open("/etc/fstab","w") as f:
-                        f.write("\n#/home/iamdveloper/Dekstop/default *(rw,sync,no_root_squah,no_subtree_check")
+                    with open("/etc/exports","w") as f:
+                        pc_name="iamdveloper"
+                        f.write(f"\n/home/{pc_name}/default *(rw,sync,no_root_squash,no_subtree_check)")
                     subprocess.Popen("sudo exportfs -a",shell=True).communicate()[0]
                     
                     
