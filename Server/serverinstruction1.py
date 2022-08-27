@@ -87,7 +87,11 @@ class MainServerPage(QWidget,QColor):
     def main_window(self):
         
         self.setProperty("class","main")
-
+        self.fill_form=QLabel("Fill form below to establish connection")
+        self.fill_form.setStyleSheet("margin-bottom: 20")
+        self.fill_form.setFont(QFont("Serif",20,QFont.Weight.DemiBold))
+        self.fill_form.setProperty("class","label_fill")
+        
         self.vbox=QVBoxLayout()
         self.vbox.setAlignment(Qt.AlignmentFlag.AlignAbsolute)
 
@@ -95,38 +99,33 @@ class MainServerPage(QWidget,QColor):
         self.vbox.setSpacing(0)
         
         
-        
-        self.fill_form=QLabel("Fill form below to establish connection")
-        self.fill_form.setFont(QFont("Serif",20,QFont.Weight.DemiBold))
-        self.fill_form.setProperty("class","label_fill")
-        
-        self.name_server=QLabel("Username",self)
-        self.name_server.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
-        self.name_server.setProperty("class","label_cons")
-        
-        self.new_server_user=QLineEdit()
-        self.new_server_user.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
-        self.new_server_user.setFixedHeight(55)
-        self.new_server_user.setFixedWidth(350)
-        self.new_server_user.setPlaceholderText("Username of this PC")
-        self.new_server_user.setProperty("class","server_input")
+        self.new_client_user=QLineEdit()
+        self.new_client_user.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;margin-bottom:15")
+        self.new_client_user.setFixedHeight(55)
+        self.new_client_user.setFixedWidth(650)
+        self.new_client_user.setPlaceholderText("Username of Client PC")
+        self.new_client_user.setProperty("class","server_input")
 
-        self.ip_client=QLabel("IP Address")
+        self.ip_client=QLabel("Client IP Address",self)
+        self.ip_client.setStyleSheet("margin-bottom: 5")
         self.ip_client.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.ip_client.setProperty("class","label_cons")
 
        
 
         self.mpi_file=QLabel("MPI File",self)
+        self.mpi_file.setStyleSheet("margin-bottom: 5")
         self.mpi_file.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.mpi_file.setProperty("class","label_cons")
 
 
-        self.mpi_code=QLabel("MPI Code",self)
-        self.mpi_code.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
-        self.mpi_code.setProperty("class","label_cons")
+        self.client_user_name=QLabel("Client Username",self)
+        self.client_user_name.setStyleSheet("margin-bottom: 5")
+        self.client_user_name.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
+        self.client_user_name.setProperty("class","label_cons")
 
         self.hosts=QLabel("Hosts",self)
+        self.hosts.setStyleSheet("margin-bottom: 5")
         self.hosts.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.hosts.setProperty("class","label_cons")
 
@@ -137,56 +136,44 @@ class MainServerPage(QWidget,QColor):
         self.new_server_password=QLineEdit()
         self.new_server_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
         self.new_server_password.setFixedHeight(55)
-        self.new_server_password.setFixedWidth(350)
+        self.new_server_password.setFixedWidth(650)
         self.new_server_password.setPlaceholderText(" Password")
         self.new_server_password.setEchoMode(QLineEdit.EchoMode.Password)
         self.new_server_password.setProperty("class","server_input")
 
         self.choose_file=QPushButton("Choose File")
+        self.choose_file.setStyleSheet("margin-bottom:15")
         self.choose_file.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
         self.choose_file.setProperty("class","cancel")
         self.choose_file.setFixedHeight(55)
-        self.choose_file.setFixedWidth(350)
+        self.choose_file.setFixedWidth(650)
         self.choose_file.clicked.connect(self.showFileDialog)
         
         self.type_of_code=QComboBox()
         self.type_of_code.setFixedHeight(55)
-        self.type_of_code.setFixedWidth(350)
+        self.type_of_code.setFixedWidth(650)
         self.type_of_code.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
         self.type_of_code.setProperty("class","combo_tins")
         self.type_of_code.addItems(["Type of MPI Code","C","C++"])
         self.type_of_code.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
 
         self.number_of_ranks=QLineEdit()
-        self.number_of_ranks.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
+        self.number_of_ranks.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\n margin-bottom:15")
         self.number_of_ranks.setFixedHeight(55)
-        self.number_of_ranks.setFixedWidth(350)
+        self.number_of_ranks.setFixedWidth(650)
         self.number_of_ranks.setPlaceholderText(" Number of ranks")
         self.number_of_ranks.setValidator(QIntValidator())
         self.number_of_ranks.setProperty("class","server_input")
 
-        self.ssh_key=QComboBox()
-        self.ssh_key.setFixedHeight(55)
-        self.ssh_key.setFixedWidth(350)
-        self.ssh_key.setStyleSheet(" QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}")
-        self.ssh_key.setProperty("class","combo_tins")
-        self.ssh_key.addItems(["Type of ssh key","RSA","DSA"])
-        self.ssh_key.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
+
         
         self.client_ip=QLineEdit()
-        self.client_ip.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
+        self.client_ip.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\n margin-bottom:15")
         self.client_ip.setFixedHeight(55)
-        self.client_ip.setFixedWidth(350)
+        self.client_ip.setFixedWidth(650)
         self.client_ip.setPlaceholderText(" Client IP Address")
         self.client_ip.setProperty("class","server_input")
 
-        self.main_user_account_password=QLineEdit()
-        self.main_user_account_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px")
-        self.main_user_account_password.setFixedHeight(55)
-        self.main_user_account_password.setFixedWidth(350)
-        self.main_user_account_password.setPlaceholderText(" Main user account password")
-        self.main_user_account_password.setEchoMode(QLineEdit.EchoMode.Password)
-        self.main_user_account_password.setProperty("class","server_input")
 
         ip_address="(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
         regex_ip=QRegularExpression("^" + ip_address + "\\." + ip_address + "\\." + ip_address + "\\." + ip_address + "$")
@@ -196,18 +183,22 @@ class MainServerPage(QWidget,QColor):
         self.exit=QPushButton("Cancel",self)
         self.exit.setProperty("class","cancel")
         self.exit.setFixedHeight(40)
-        self.exit.setFixedWidth(350)
+        self.exit.setFixedWidth(150)
         self.exit.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
         
 
         
 
-        self.server=QPushButton("Establish Connection",self)
+        self.server=QPushButton("Connect",self)
         self.server.setProperty("class","continued")
         self.server.setFont(QFont("Serif",16,QFont.Weight.ExtraLight))
         self.server.setFixedHeight(40)
-        self.server.setFixedWidth(350)
+        self.server.setFixedWidth(150)
         self.server.clicked.connect(self.proceed)
+        
+        self.hbox=QHBoxLayout()
+        self.hbox.addWidget(self.exit)
+        self.hbox.addWidget(self.server)
 
         self.load=loading_screen()
         self.load.hide()
@@ -217,6 +208,9 @@ class MainServerPage(QWidget,QColor):
         self.vbox.addWidget(self.ip_client)
         self.vbox.addWidget(self.client_ip)
 
+        self.vbox.addWidget(self.client_user_name)
+        self.vbox.addWidget(self.new_client_user)
+
         self.vbox.addWidget(self.mpi_file)
         self.vbox.addWidget(self.choose_file)
 
@@ -225,13 +219,6 @@ class MainServerPage(QWidget,QColor):
     
 
         self.vbox.addWidget(self.space1)
-
-        self.hbox=QHBoxLayout()
-        self.hbox.addWidget(self.exit)
-        self.hbox.addWidget(self.server)
-
-       
-
 
         self.vbox.addLayout(self.hbox)
 
@@ -316,15 +303,15 @@ class MainServerPage(QWidget,QColor):
 
                     #wait for client PC to connect
                     try:
-                        subprocess.Popen("rm -d default",shell=True).communicate()[0]
+                        subprocess.Popen("rm -d test",shell=True).communicate()[0]
                     except:
                         print("No default directory")
-                    subprocess.Popen("cd ..;cd ..;mkdir default",shell=True).communicate()[0]
+                    subprocess.Popen("cd ..;cd ..;mkdir test",shell=True).communicate()[0]
                     
                     with open("/etc/exports","w") as f:
                         pc_name="iamdveloper"
-                        f.write(f"\n/home/{pc_name}/default *(rw,sync,no_root_squash,no_subtree_check)")
-                    subprocess.Popen("sudo exportfs -a",shell=True).communicate()[0]
+                        f.write(f"\n#/home/{pc_name}/default *(rw,sync,no_root_squash,no_subtree_check)")
+                    subprocess.Popen("exportfs -a",shell=True).communicate()[0]
                     
                     
                     
@@ -336,7 +323,7 @@ class MainServerPage(QWidget,QColor):
             except:
                 incomplete=QMessageBox(self)
                 incomplete.setWindowTitle("Incomplete Details")
-                incomplete.setText("File not uploaded")
+                incomplete.setText("An Error occured")
                 incomplete.setIcon(QMessageBox.Icon.Critical)
                 incomplete.setStandardButtons(QMessageBox.StandardButton.Ok)
                 incomplete.exec()   

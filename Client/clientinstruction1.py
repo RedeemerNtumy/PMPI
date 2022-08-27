@@ -75,7 +75,7 @@ class MainClientPage(QWidget,QColor):
         self.main_password.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.main_password.setProperty("class","label_cons")
 
-        self.ip_server=QLabel("IP Address",self)
+        self.ip_server=QLabel("Server IP Address",self)
         self.ip_server.setStyleSheet("margin-bottom: 5")
         self.ip_server.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.ip_server.setProperty("class","label_cons")
