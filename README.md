@@ -6,9 +6,9 @@
 
 #### Before you run the program, make sure that you have a passwordless login
 
-##### Log in the server PC with the code below and input the recquired password
-`ssh username@ip_address` where `username` is the username of the server pc and `ip_address` is the ip address of the server pc
-Exit from the server PC and navigate to the ssh folder on the client PC
+##### Log in the client PC with the code below and input the recquired password
+`ssh username@ip_address` where `username` is the username of the client pc and `ip_address` is the ip address of the client pc
+Exit from the client PC and navigate to the ssh folder on the Server PC
 
 ##### To move to the ssh folder,run the command below
 `cd .ssh`
@@ -16,8 +16,11 @@ Exit from the server PC and navigate to the ssh folder on the client PC
 ##### You can generate an ssh key with either commands
 `ssh-keygen -t rsa` or `ssh-keygen -t dsa`
 
-##### Finally run the command below to allow the passwordless login
+##### Run the command below to allow the passwordless login
 `ssh-copy-id username@ip_address`
+
+##### To check whether the passwordless login worked, try logging in again with the command below. You can log out after it works
+`ssh username@ip_address` 
 
 
 ### To run the program,run this
