@@ -1,7 +1,6 @@
-#!/bin/bash 
-useradd -p $2 $1
-# echo $2 | passwd --stdin $1
+# #!/bin/bash
+# read -p 'Server username: ' uservar
+# read -sp 'Password: ' pwvar
+# for server in `cat list_of_servers`; do
+#     sshpass -p "${pwvar}" ssh-copy-id -i ~/.ssh/id_rsa.pub -o StrictHostKeyChecking=no "${uservar}@${server}"
 # done
-
-
-

@@ -55,8 +55,25 @@
 # # generate_key('/home/iamdveloper/.ssh','id_rsa.pub')
 # # copy_id()
 # # ssh_conn("yes")
+import socket
+import subprocess
+def check():
 
-
-
+            s=socket.socket()
+            port=65009
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            s.bind(("",port))
+            s.listen(5)
+            print("Server Started")
+            info=""
+            while info!="Done":
+                c,addr=s.accept()
+                print("Message received")
+                content=c.recv(100).decode()
+                info=content
+                print(info)
+                c.close()
+            s.close()
+check()
 
 

@@ -79,8 +79,10 @@ class ChooseWindow(QWidget,QColor):
 
     def proceed(self):
         if self.type_of_device.currentText()=="Server":
+            self.close()
             self.chooseWindow1.show()
         elif self.type_of_device.currentText()=="Client":
+            self.close()
             self.chooseWindow2.show()
             
         else:
