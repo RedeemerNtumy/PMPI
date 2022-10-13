@@ -89,13 +89,6 @@ class MainServerPage(QWidget,QColor):
         self.vbox.addStretch()
         self.vbox.setSpacing(0)
         
-        
-        self.client_username=QLineEdit()
-        self.client_username.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;margin-bottom:15")
-        self.client_username.setFixedHeight(55)
-        self.client_username.setFixedWidth(650)
-        self.client_username.setPlaceholderText("Username of client PC")
-        self.client_username.setProperty("class","server_input")
 
         self.ip_client=QLabel("Client IP Address",self)
         self.ip_client.setStyleSheet("margin-bottom: 5")
@@ -108,11 +101,6 @@ class MainServerPage(QWidget,QColor):
         self.mpi_file.setStyleSheet("margin-bottom: 5")
         self.mpi_file.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.mpi_file.setProperty("class","label_cons")
-
-        self.client_user_name=QLabel("Client Username",self)
-        self.client_user_name.setStyleSheet("margin-bottom: 5")
-        self.client_user_name.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
-        self.client_user_name.setProperty("class","label_cons")
 
         self.hosts=QLabel("Ranks",self)
         self.hosts.setStyleSheet("margin-bottom: 5")
@@ -197,11 +185,6 @@ class MainServerPage(QWidget,QColor):
 
         self.vbox.addWidget(self.ip_client)
         self.vbox.addWidget(self.client_ip)
-
-        self.vbox.addWidget(self.client_user_name)
-        self.vbox.addWidget(self.client_username)
-
- 
 
         self.vbox.addWidget(self.mpi_file)
         self.vbox.addWidget(self.choose_file)
