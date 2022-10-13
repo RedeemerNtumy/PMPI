@@ -195,14 +195,15 @@ class MainClientPage(QWidget,QColor):
             if button==QMessageBox.StandardButton.Yes:
                 try:
                     info=self.server_ip.text()
-                    send(info)
-                    time.sleep(5)
+                    name=self.server_username.text()
+                    send(info,name)
+                    waste_time()
                     try:
                         work=subprocess.Popen("cd ..;cd ..;mkdir mpichdefault",shell=True,stderr=PIPE,stdout=PIPE)
                         stdout,stderr=work.communicate()[0]
                     except:
                         print("Overwriting directory with mpichdefault")
-                        subprocess.Popen(f"cd ..;cd ..;rm -d mpichdefault;mkdir mpichdefault;mount -t nfs {self.server_ip.text()}:home/{self.server_username.text}/mpichdefault ~/mpichdefault ",shell=True).communicate()[0]
+                        subprocess.Popen(f"cd ..;cd ..;rm -d mpichdefault;mkdir mpichdefault;mount -t nfs {self.server_ip.text()}:home/{self.server_username.text()}/mpichdefault /home/{self.server_username.text()}/mpichdefault ",shell=True).communicate()[0]
                     # subprocess.Popen(f"cd ..;cd ..;umount -f -l ~/mpichdefault ",shell=True).communicate()[0]
                         print("Everything works")
                 except:
@@ -225,14 +226,16 @@ if __name__ == "__main__":
     window = ServerorClient.Window()
     sys.exit(app.exec())
 
-def send(host):
+def send(host,name):
         # try:
             s=socket.socket()
             port=65014
             s.connect((host,port))
-            word="Done"
-            s.send(word.encode())
+            s.send(name.encode())
             print("sent")
             s.close()
         # except Exception as e:
         #     print(e)
+def waste_time():
+    for number in range(1,99999):
+        print("Connecting...")
