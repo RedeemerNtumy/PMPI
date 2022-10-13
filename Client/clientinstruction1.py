@@ -1,3 +1,5 @@
+from asyncio.subprocess import PIPE
+from time import time
 from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QVBoxLayout,QLineEdit,QLabel,QHBoxLayout
 from PyQt6.QtGui import QColor,QRegularExpressionValidator,QGuiApplication,QFont
 import sys
@@ -6,8 +8,10 @@ from Server.serverinstruction1 import loading_screen
 import ServerorClient
 from PyQt6.QtCore import QRegularExpression,Qt
 from PyQt6.QtWidgets import QMessageBox
+import asyncio
 import subprocess
 import os
+import time
 
 
 class MainClientPage(QWidget,QColor):  
@@ -189,26 +193,23 @@ class MainClientPage(QWidget,QColor):
             msg.setStandardButtons(QMessageBox.StandardButton.No|QMessageBox.StandardButton.Yes)
             button=msg.exec()
             if button==QMessageBox.StandardButton.Yes:
-               info=self.ip_server.text()
-               self.load=loading_screen()
-               self.load.show()
-               send(host=info)
-               self.load.hide()
-               try:
-                if os.path.isdir(f"./mpichdefault")==True:
-                    subprocess.Popen(f"rm -d /mpichdefault",shell=True).communicate()[0]
-                else:
-                    subprocess.Popen(f"cd ..;cd ..;mkdir /mpichdefault;mount -t nfs {self.server_ip.text()}:home/{self.server_username.text}//mpichdefault ~//mpichdefault ",shell=True).communicate()[0]
-                    with open("/etc/fstab","a") as f:
-                        
-                        f.write(f"\n#{self.server_ip.text()}:/home/{self.server_username.text}//mpichdefault /home/{self.pc_name}//mpichdefault nfs")
-                        subprocess.Popen("exportfs -a",shell=True).communicate()[0]
-                print("Everything works")
-               except:
-                msg=QMessageBox(self)
-                msg.setIcon(QMessageBox.Icon.Critical)
-                msg.setWindowTitle("Critical Error")
-                msg.setText("Could not mount directory")
+                try:
+                    info=self.server_ip.text()
+                    send(info)
+                    time.sleep(5)
+                    try:
+                        work=subprocess.Popen("cd ..;cd ..;mkdir mpichdefault",shell=True,stderr=PIPE,stdout=PIPE)
+                        stdout,stderr=work.communicate()[0]
+                    except:
+                        print("Overwriting directory with mpichdefault")
+                        subprocess.Popen(f"cd ..;cd ..;rm -d mpichdefault;mkdir mpichdefault;mount -t nfs {self.server_ip.text()}:home/{self.server_username.text}/mpichdefault ~/mpichdefault ",shell=True).communicate()[0]
+                    # subprocess.Popen(f"cd ..;cd ..;umount -f -l ~/mpichdefault ",shell=True).communicate()[0]
+                        print("Everything works")
+                except:
+                    msg=QMessageBox(self)
+                    msg.setIcon(QMessageBox.Icon.Critical)
+                    msg.setWindowTitle("Critical Error")
+                    msg.setText("Could not mount directory")
                 
 
              
@@ -228,7 +229,7 @@ def send(host):
         # try:
             s=socket.socket()
             port=65014
-            s.connect(("192.168.137.169",port))
+            s.connect((host,port))
             word="Done"
             s.send(word.encode())
             print("sent")
