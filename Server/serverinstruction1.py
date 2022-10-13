@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtCore import Qt,QRegularExpression
 import socket
 import subprocess
+import time
 
 
 
@@ -42,7 +43,8 @@ class loading_screen(QWidget):
 
 class MainServerPage(QWidget,QColor): 
     pc_name=socket.gethostname() 
-    def __init__(self):     
+    def __init__(self):    
+        global ip 
         super().__init__() 
         try: 
             host_name=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -225,16 +227,15 @@ class MainServerPage(QWidget,QColor):
 
     fileName="Choose File"
     def showFileDialog(self):
-        global fileName
+        global fileName,lines
         try:
             home_dir = str(Path.home())
             mpich_file=QFileDialog.getOpenFileName(self, 'Open file', home_dir)
             file_name = os.path.basename(str(mpich_file))
             file_name=file_name.split(",")[0]
             file_name=file_name[:-1]
-            self.choose_file.setText(file_name)
             with open(mpich_file[0]) as f:
-                lines = f.readlines()
+                lines = f.readlines()  
             if "MPI_Init" not in str(lines) and "MPI_Finalize" not in str(lines):
                 self.invalid_file()
             if ".c++" in file_name:
@@ -243,9 +244,12 @@ class MainServerPage(QWidget,QColor):
             elif ".c" in file_name:
                 self.type_of_code.setCurrentText("C")
                 self.choose_file.setStyleSheet("background-color:#004ADB;\n color: white;\n margin-bottom:15")
+            elif len(file_name)==0:
+                self.invalid_file()
             else:
                 self.invalid_file()
                 pass 
+            self.choose_file.setText(file_name)
             
         except:
             fileName=file_name
@@ -272,6 +276,16 @@ class MainServerPage(QWidget,QColor):
     def proceed(self):
         global fileName
 
+        def create_code(ext):
+            if ext=="cpp":
+                with open(f"job.cpp","a") as code:
+                    code.writelines(lines)
+                    subprocess.Popen(f"cp job.cpp /home/{self.pc_name}/mpichdefault;cd ..;cd ..;cd mpichdefault;mpic++ job.cpp -o job.exe;mpirun -np {self.number_of_ranks.text()} -hosts {self.client_ip.text()},{ip} ./job.exe",shell=True).communicate()[0]
+            else:
+                with open(f"job.c","a") as code:
+                    code.writelines(lines)
+                    subprocess.Popen(f"cp job.c /home/{self.pc_name}/mpichdefault;cd ..;cd ..;cd mpichdefault;mpicc -o job.exe job.c;mpirun -np {self.number_of_ranks.text()} -hosts {self.client_ip.text()},{ip} ./job.exe",shell=True).communicate()[0]
+
         def report(self,text):
             report=QMessageBox(self)
             report.setWindowTitle("Incomplete Details")
@@ -290,6 +304,7 @@ class MainServerPage(QWidget,QColor):
 
         if self.client_ip.text().count(".") < 3:
             report(self,text="Incomplete Client IP Address")
+        
         else:
             try:
                 msg=QMessageBox(self)
@@ -304,7 +319,7 @@ class MainServerPage(QWidget,QColor):
                     # self.load=loading_screen()
                     # self.load.show()
                     check()
-                    if check==1:
+                    if check:
                         try:
                             work=subprocess.Popen("cd ..;cd ..;mkdir mpichdefault",shell=True,stderr=PIPE,stdout=PIPE)
                             stdout,stderr=work.communicate()[0] 
@@ -314,9 +329,15 @@ class MainServerPage(QWidget,QColor):
                  
                         with open("/etc/exports","a") as f:
                         
-                            f.write(f"\n#/home/{self.pc_name}/mpichdefault *(rw,sync,no_root_squash,no_subtree_check)")
+                            f.write(f"\n/home/{self.pc_name}/mpichdefault *(rw,sync,no_root_squash,no_subtree_check)")
                             subprocess.Popen("exportfs -a",shell=True).communicate()[0]
-                        print("Everything works")
+                            time.sleep(5)
+                            if ".c++" in fileName:
+                                create_code("cpp")
+                            elif ".c" in fileName:
+                                create_code("c")
+                            print("Everything works")
+                            
                 elif button==QMessageBox.StandardButton.No:
                     print("There is a problem")
                 
@@ -344,6 +365,7 @@ if __name__ == "__main__":
 
 def check():
         try:
+            print
             s=socket.socket()
             port=65014
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -369,4 +391,4 @@ def check():
             incomplete.setStandardButtons(QMessageBox.StandardButton.Ok)
             incomplete.exec() 
             s.close()
-        return 1 
+        return True 
