@@ -284,6 +284,7 @@ class MainServerPage(QWidget,QColor):
                     # self.load.show()
                     check()
                     if check:
+                        self.close()
                         try:
                             with open("/etc/exports","a") as f:
                                 f.write(f"\n/home/{info}/mpichdefault *(rw,sync,no_root_squash,no_subtree_check)")
@@ -293,28 +294,30 @@ class MainServerPage(QWidget,QColor):
                             print("Finished writing")
                         except:
                             print("Overwriting directory with mpichdefault")
-                            subprocess.Popen("cd ..;cd ..;rm -d mpichdefault;mkdir mpichdefault",shell=True).communicate()[0]
+                            subprocess.Popen("cd ..;cd ..;rm -r mpichdefault;mkdir mpichdefault",shell=True).communicate()[0]
 
                             subprocess.Popen("exportfs -a",shell=True).communicate()[0]
                             waste_time()
                             if "cpp" in fileName:
-                                with open(f"job.cpp","a") as code:
-                                    code.writelines(lines)
-                                    subprocess.Popen(f"cp job.cpp /home/{info}/mpichdefault;cd ..;cd ..;cd mpichdefault;mpic++ job.cpp -o job.exe;mpirun -np {self.number_of_ranks.text()} -hosts {self.client_ip.text()},{ip} ./job.exe",shell=True).communicate()[0]
+                                # with open(f"job.cpp","a") as code:
+                                #     code.writelines(lines)
+                                    # subprocess.Popen(f"cd codes;cp {fileName} /home/{info}/mpichdefault;cd ..;cd ..;cd ..;cd mpichdefault;mpic++ {fileName} -o job.exe;sudo -u joshua mpirun -np {self.number_of_ranks.text()} -hosts {self.client_ip.text()},{ip} ./job.exe",shell=True).communicate()[0]
+                                    
+                                    subprocess.Popen(f"cp job.cpp /home/{info}/mpichdefault;cd ..;cd ..;cd mpichdefault;mpic++ job.cpp -o job.exe",shell=True).communicate()[0]
                             elif "c" in fileName:
-                                with open(f"job.c","a") as code:
-                                    code.writelines(lines)
-                                    subprocess.Popen(f"cp job.c /home/{info}/mpichdefault;cd ..;cd ..;cd mpichdefault;mpicc -o job.exe job.c;mpirun -np {self.number_of_ranks.text()} -hosts {self.client_ip.text()},{ip} ./job.exe",shell=True).communicate()[0]
-
+                                # with open(f"job.c","a") as code:
+                                #     code.writelines(lines)
+                                    subprocess.Popen(f"cd codes;cp {fileName} /home/{info}/mpichdefault;cd ..;cd ..;cd ..;cd mpichdefault;mpicc -o job.exe {fileName}",shell=True).communicate()[0]
+# mpirun -np {self.number_of_ranks.text()} -hosts {self.client_ip.text()},{ip} ./job.exe
                             print("Everything Works")
-                            output=QMessageBox(self)
-                            output.setWindowTitle("Output")
-                            output.setText("Everything works")
-                            output.setIcon(QMessageBox.Icon.Information)
-                            output.setStandardButtons(QMessageBox.StandardButton.Retry|QMessageBox.StandardButton.Close)
-                            final=output.exec()  
-                            if final==QMessageBox.StandardButton.Close:
-                                sys.exit()
+                            # output=QMessageBox(self)
+                            # output.setWindowTitle("Output")
+                            # output.setText("Everything works")
+                            # output.setIcon(QMessageBox.Icon.Information)
+                            # output.setStandardButtons(QMessageBox.StandardButton.Retry|QMessageBox.StandardButton.Close)
+                            # final=output.exec()  
+                            # if final==QMessageBox.StandardButton.Close:
+                            #     sys.exit()
                             
                 elif button==QMessageBox.StandardButton.No:
                     print("There is a problem")
@@ -344,7 +347,7 @@ if __name__ == "__main__":
 
 def waste_time():
     for number in range(1,99999):
-        print("Connecting...")
+        print("Working...please wait")
 def check():
         global info
         try:
