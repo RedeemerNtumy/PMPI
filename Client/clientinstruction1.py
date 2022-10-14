@@ -197,13 +197,14 @@ class MainClientPage(QWidget,QColor):
                     info=self.server_ip.text()
                     name=self.server_username.text()
                     send(info,name)
+                    self.close()
                     waste_time()
                     try:
                         work=subprocess.Popen("cd ..;cd ..;mkdir mpichdefault",shell=True,stderr=PIPE,stdout=PIPE)
                         stdout,stderr=work.communicate()[0]
                     except:
                         print("Overwriting directory with mpichdefault")
-                        subprocess.Popen(f"cd ..;cd ..;rm -d mpichdefault;mkdir mpichdefault;mount -t nfs {self.server_ip.text()}:home/{self.server_username.text()}/mpichdefault /home/{self.server_username.text()}/mpichdefault ",shell=True).communicate()[0]
+                        subprocess.Popen(f"cd ..;cd ..;rm -r mpichdefault;mkdir mpichdefault;mount -t nfs {self.server_ip.text()}:home/{self.server_username.text()}/mpichdefault /home/{self.server_username.text()}/mpichdefault ",shell=True).communicate()[0]
                     # subprocess.Popen(f"cd ..;cd ..;umount -f -l ~/mpichdefault ",shell=True).communicate()[0]
                         print("Everything works")
                 except:
@@ -238,4 +239,4 @@ def send(host,name):
         #     print(e)
 def waste_time():
     for number in range(1,99999):
-        print("Connecting...")
+        print("Working...please wait")
