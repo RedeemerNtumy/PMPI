@@ -247,7 +247,7 @@ def check():
         try:
             print
             s=socket.socket()
-            port=65015
+            port=65010
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             s.bind(("",port))
             s.listen(5)
