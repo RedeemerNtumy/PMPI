@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtCore import Qt,QRegularExpression
 import socket
 import subprocess
-
+import time
 
 
 class loading_screen(QWidget):
@@ -280,8 +280,6 @@ class MainServerPage(QWidget,QColor):
                 msg.setStandardButtons(QMessageBox.StandardButton.No|QMessageBox.StandardButton.Yes)
                 button=msg.exec()
                 if button==QMessageBox.StandardButton.Yes:
-                    # self.load=loading_screen()
-                    # self.load.show()
                     check()
                     if check:
                         self.close()
@@ -297,31 +295,37 @@ class MainServerPage(QWidget,QColor):
                             subprocess.Popen("cd ..;cd ..;rm -r mpichdefault;mkdir mpichdefault",shell=True).communicate()[0]
 
                             subprocess.Popen("exportfs -a",shell=True).communicate()[0]
-                            waste_time()
+                            time.sleep(3)
                             if "cpp" in fileName:
-                                # with open(f"job.cpp","a") as code:
-                                #     code.writelines(lines)
-                                    # subprocess.Popen(f"cd codes;cp {fileName} /home/{info}/mpichdefault;cd ..;cd ..;cd ..;cd mpichdefault;mpic++ {fileName} -o job.exe;sudo -u joshua mpirun -np {self.number_of_ranks.text()} -hosts {self.client_ip.text()},{ip} ./job.exe",shell=True).communicate()[0]
-                                    
                                     subprocess.Popen(f"cp job.cpp /home/{info}/mpichdefault;cd ..;cd ..;cd mpichdefault;mpic++ job.cpp -o job.exe",shell=True).communicate()[0]
                             elif "c" in fileName:
-                                # with open(f"job.c","a") as code:
-                                #     code.writelines(lines)
                                     subprocess.Popen(f"cd codes;cp {fileName} /home/{info}/mpichdefault;cd ..;cd ..;cd ..;cd mpichdefault;mpicc -o job.exe {fileName}",shell=True).communicate()[0]
-# mpirun -np {self.number_of_ranks.text()} -hosts {self.client_ip.text()},{ip} ./job.exe
                             print("Everything Works")
-                            # output=QMessageBox(self)
-                            # output.setWindowTitle("Output")
-                            # output.setText("Everything works")
-                            # output.setIcon(QMessageBox.Icon.Information)
-                            # output.setStandardButtons(QMessageBox.StandardButton.Retry|QMessageBox.StandardButton.Close)
-                            # final=output.exec()  
-                            # if final==QMessageBox.StandardButton.Close:
-                            #     sys.exit()
+                            output=QMessageBox(self)
+                            output.setWindowTitle("Setup Complete")
+                            output.setText(f"Run the code below in the command line to send the job to the client PC\nmpirun -np {self.number_of_ranks.text()} -hosts {self.client_ip.text()},{ip} ./job.exe\n")
+                            client_ip=self.client_ip.text()
+                            output.setIcon(QMessageBox.Icon.Information)
+                            output.setStandardButtons(QMessageBox.StandardButton.Ok|QMessageBox.StandardButton.Close)
+                            final=output.exec()  
+                            if final==QMessageBox.StandardButton.Close:
+                                send()
+                                reset_everything_server()
+                                
+                            elif final==QMessageBox.StandardButton.Ok:
+                                subprocess.Popen("gnome-terminal",shell=True)
+                                output=QMessageBox(self)
+                                output.setWindowTitle("Done Already?")
+                                output.setText(f"Click the button below if you are done running the code")
+                                output.setIcon(QMessageBox.Icon.Information)
+                                output.setStandardButtons(QMessageBox.StandardButton.Ok)
+                                final=output.exec() 
+                                if final==QMessageBox.StandardButton.Ok:
+                                    reset_everything_server()
                             
                 elif button==QMessageBox.StandardButton.No:
                     print("There is a problem")
-                
+                    
 
             except Exception as e:
                 print(e)
@@ -348,6 +352,7 @@ if __name__ == "__main__":
 def waste_time():
     for number in range(1,99999):
         print("Working...please wait")
+
 def check():
         global info
         try:
@@ -378,3 +383,17 @@ def check():
             incomplete.exec() 
             s.close()
         return True 
+
+def send(host):
+            s=socket.socket()
+            port=65015
+            s.connect((host,port))
+            s.send("Info".encode())
+            print("sent")
+            s.close()
+
+def reset_everything_server():
+    subprocess.Popen(f"sed -i '$d' /etc/exports",shell=True).communicate()[0]
+    time.sleep(1)
+    subprocess.Popen(f"cd ..;cd ..;rm -r mpichdefault;cd .ssh;rm id_rsa;rm id_rsa.pub",shell=True).communicate()[0]
+    sys.exit()
