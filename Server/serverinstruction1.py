@@ -297,9 +297,11 @@ class MainServerPage(QWidget,QColor):
                             subprocess.Popen("exportfs -a",shell=True).communicate()[0]
                             time.sleep(3)
                             if "cpp" in fileName:
-                                    subprocess.Popen(f"cp job.cpp /home/{info}/mpichdefault;cd ..;cd ..;cd mpichdefault;mpic++ job.cpp -o job.exe",shell=True).communicate()[0]
+                                    subprocess.Popen(f"cd codes;pwd;cp {fileName} /home/{info}/mpichdefault",shell=True).communicate()[0]
+                                    subprocess.Popen(f"cd ..;cd ..;cd mpichdefault;mpic++ {fileName} -o job.exe").communicate()[0]
                             elif "c" in fileName:
-                                    subprocess.Popen(f"cd codes;cp {fileName} /home/{info}/mpichdefault;cd ..;cd ..;cd ..;cd mpichdefault;mpicc -o job.exe {fileName}",shell=True).communicate()[0]
+                                    subprocess.Popen(f"cd codes;pwd;cp {fileName} /home/{info}/mpichdefault",shell=True).communicate()[0]
+                                    subprocess.Popen(f"cd ..;cd ..;cd mpichdefault;mpicc -o job.exe {fileName}").communicate()[0]
                             print("Everything Works")
                             output=QMessageBox(self)
                             output.setWindowTitle("Setup Complete")
@@ -309,7 +311,7 @@ class MainServerPage(QWidget,QColor):
                             output.setStandardButtons(QMessageBox.StandardButton.Ok|QMessageBox.StandardButton.Close)
                             final=output.exec()  
                             if final==QMessageBox.StandardButton.Close:
-                                send()
+                                send(client_ip)
                                 reset_everything_server()
                                 
                             elif final==QMessageBox.StandardButton.Ok:
@@ -321,6 +323,7 @@ class MainServerPage(QWidget,QColor):
                                 output.setStandardButtons(QMessageBox.StandardButton.Ok)
                                 final=output.exec() 
                                 if final==QMessageBox.StandardButton.Ok:
+                                    send(client_ip)
                                     reset_everything_server()
                             
                 elif button==QMessageBox.StandardButton.No:
@@ -386,7 +389,7 @@ def check():
 
 def send(host):
             s=socket.socket()
-            port=65015
+            port=65010
             s.connect((host,port))
             s.send("Info".encode())
             print("sent")
