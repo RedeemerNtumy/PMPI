@@ -305,7 +305,7 @@ class MainServerPage(QWidget,QColor):
                             print("Everything Works")
                             output=QMessageBox(self)
                             output.setWindowTitle("Setup Complete")
-                            output.setText(f"Steps to follow:\n1.Run `su {info}` in the terminal that opens to exit from root.\n\n2.Run the code below in the command line to send the job to the client PC\nmpirun -np {self.number_of_ranks.text()} -hosts {self.client_ip.text()},{ip} ./job.exe\n")
+                            output.setText(f"Run the code below in the command line to send the job to the client PC\nmpirun -np {self.number_of_ranks.text()} -hosts {self.client_ip.text()},{ip} ./job.exe\n")
                             client_ip=self.client_ip.text()
                             output.setIcon(QMessageBox.Icon.Information)
                             output.setStandardButtons(QMessageBox.StandardButton.Ok|QMessageBox.StandardButton.Close)
@@ -315,7 +315,7 @@ class MainServerPage(QWidget,QColor):
                                 reset_everything_server()
                                 
                             elif final==QMessageBox.StandardButton.Ok:
-                                subprocess.Popen("gnome-terminal",shell=True)
+                                subprocess.Popen("cd ..;cd ..;cd mpichdefault;gnome-terminal -- su joshua",shell=True)
                                 output=QMessageBox(self)
                                 output.setWindowTitle("Done Already?")
                                 output.setText(f"Click the button below if you are done running the code")
