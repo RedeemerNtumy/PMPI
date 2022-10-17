@@ -198,15 +198,18 @@ class MainClientPage(QWidget,QColor):
                     name=self.server_username.text()
                     send(info,name)
                     self.close()
-                    waste_time()
+                    time.sleep(3)
                     try:
                         work=subprocess.Popen("cd ..;cd ..;mkdir mpichdefault",shell=True,stderr=PIPE,stdout=PIPE)
                         stdout,stderr=work.communicate()[0]
                     except:
                         print("Overwriting directory with mpichdefault")
                         subprocess.Popen(f"cd ..;cd ..;rm -r mpichdefault;mkdir mpichdefault;mount -t nfs {self.server_ip.text()}:home/{self.server_username.text()}/mpichdefault /home/{self.server_username.text()}/mpichdefault ",shell=True).communicate()[0]
-                    # subprocess.Popen(f"cd ..;cd ..;umount -f -l ~/mpichdefault ",shell=True).communicate()[0]
-                        print("Everything works")
+                        time.sleep(2)
+                        check()
+                        if check:
+                          subprocess.Popen(f"cd ..;cd ..;umount -f -l ~/mpichdefault;rm -r mpichdefault;cd .ssh;rm authorized_keys",shell=True).communicate()[0]
+                          print("Everything works")
                 except:
                     msg=QMessageBox(self)
                     msg.setIcon(QMessageBox.Icon.Critical)
@@ -228,15 +231,44 @@ if __name__ == "__main__":
     sys.exit(app.exec())
 
 def send(host,name):
-        # try:
             s=socket.socket()
             port=65014
             s.connect((host,port))
             s.send(name.encode())
             print("sent")
             s.close()
-        # except Exception as e:
-        #     print(e)
+      
 def waste_time():
     for number in range(1,99999):
         print("Working...please wait")
+
+def check():
+        global info
+        try:
+            print
+            s=socket.socket()
+            port=65015
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            s.bind(("",port))
+            s.listen(5)
+            print("Server Started")
+            info=""
+            while len(info)==0:
+                c,addr=s.accept()
+                print("Message received")
+                content=c.recv(100).decode()
+                info=content
+                print(info)
+                c.close()
+            s.close()  
+          
+        except Exception as e:
+            print(e)
+            incomplete=QMessageBox()
+            incomplete.setWindowTitle("Broken Connection")
+            incomplete.setText("There seems to be a problem")
+            incomplete.setIcon(QMessageBox.Icon.Critical)
+            incomplete.setStandardButtons(QMessageBox.StandardButton.Ok)
+            incomplete.exec() 
+            s.close()
+        return True 
