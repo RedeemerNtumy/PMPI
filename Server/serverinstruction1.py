@@ -297,11 +297,11 @@ class MainServerPage(QWidget,QColor):
                             subprocess.Popen("exportfs -a",shell=True).communicate()[0]
                             time.sleep(3)
                             if "cpp" in fileName:
-                                    subprocess.Popen(f"cd codes;pwd;cp {fileName} /home/{info}/mpichdefault",shell=True).communicate()[0]
-                                    subprocess.Popen(f"cd ..;cd ..;cd mpichdefault;mpic++ {fileName} -o job.exe").communicate()[0]
+                                    subprocess.Popen(f"cd codes;cp {fileName} /home/{info}/mpichdefault",shell=True).communicate()[0]
+                                    subprocess.Popen(f"cd ..;cd ..;cd mpichdefault;mpic++ {fileName} -o job.exe",shell=True).communicate()[0]
                             elif "c" in fileName:
-                                    subprocess.Popen(f"cd codes;pwd;cp {fileName} /home/{info}/mpichdefault",shell=True).communicate()[0]
-                                    subprocess.Popen(f"cd ..;cd ..;cd mpichdefault;mpicc -o job.exe {fileName}").communicate()[0]
+                                    subprocess.Popen(f"cd codes;cp {fileName} /home/{info}/mpichdefault",shell=True).communicate()[0]
+                                    subprocess.Popen(f"cd ..;cd ..;cd mpichdefault;mpicc -o job.exe {fileName}",shell=True).communicate()[0]
                             print("Everything Works")
                             output=QMessageBox(self)
                             output.setWindowTitle("Setup Complete")
