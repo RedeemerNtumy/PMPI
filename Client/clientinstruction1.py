@@ -208,7 +208,7 @@ class MainClientPage(QWidget,QColor):
                         time.sleep(2)
                         check()
                         if check:
-                          subprocess.Popen(f"cd ..;cd ..;umount -f -l ~/mpichdefault;rm -r mpichdefault;cd .ssh;rm authorized_keys",shell=True).communicate()[0]
+                          subprocess.Popen(f"cd ..;cd ..;umount -f -l /home/joshua/mpichdefault;rm -r mpichdefault;cd .ssh;rm authorized_keys;exit",shell=True).communicate()[0]
                           print("Everything works")
                 except:
                     msg=QMessageBox(self)
