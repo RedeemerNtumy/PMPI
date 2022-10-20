@@ -29,7 +29,7 @@ class MainClientPage(QWidget,QColor):
         if ip=="Disconnected":
             self.disconnected() 
 
-        self.setWindowTitle(f"Client PC : {self.pc_name}@{ip}")
+        self.setWindowTitle(f"Client PC : {ip}")
                              
         self.main_window()
 
@@ -69,31 +69,13 @@ class MainClientPage(QWidget,QColor):
         self.vbox.addStretch()
         self.vbox.setSpacing(0)
 
-        self.name_user=QLabel("Server Username")
-        self.name_user.setStyleSheet("margin-bottom: 5")
-        self.name_user.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
-        self.name_user.setProperty("class","label_cons")
 
         self.ip_server=QLabel("Server IP Address",self)
         self.ip_server.setStyleSheet("margin-bottom: 5")
         self.ip_server.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.ip_server.setProperty("class","label_cons")
-
-
-        self.server_username=QLineEdit()
-        self.server_username.setFixedHeight(55)
-        self.server_username.setFixedWidth(650)
-        self.server_username.setProperty("class","server_input")
-        self.server_username.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
-        self.server_username.setPlaceholderText(" Username of the Server PC")
         
-        self.new_client_password=QLineEdit()
-        self.new_client_password.setFixedHeight(55)
-        self.new_client_password.setFixedWidth(650)
-        self.new_client_password.setProperty("class","server_input")
-        self.new_client_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
-        self.new_client_password.setPlaceholderText(" Password")
-        self.new_client_password.setEchoMode(QLineEdit.EchoMode.Password)
+       
 
         self.server_ip=QLineEdit()
         self.server_ip.setFixedHeight(55)
@@ -102,15 +84,6 @@ class MainClientPage(QWidget,QColor):
         self.server_ip.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
         self.server_ip.setPlaceholderText(" Server IP Address")
 
-
-        self.main_user_account_password=QLineEdit()
-        self.main_user_account_password.setFixedHeight(55)
-        self.main_user_account_password.setFixedWidth(650)
-        self.main_user_account_password.setProperty("class","server_input")
-        self.main_user_account_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
-        self.main_user_account_password.setPlaceholderText(" Main user account password")
-        self.main_user_account_password.setEchoMode(QLineEdit.EchoMode.Password)
-        
 
         ip_address="(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
         regex_ip=QRegularExpression("^" + ip_address + "\\." + ip_address + "\\." + ip_address + "\\." + ip_address + "$")
@@ -133,15 +106,10 @@ class MainClientPage(QWidget,QColor):
         
         self.vbox.addWidget(self.fill_form)
         
-        self.vbox.addWidget(self.name_user)
-        self.vbox.addWidget(self.server_username,alignment=Qt.AlignmentFlag.AlignCenter)
-        
         self.vbox.addWidget(self.ip_server)
         self.vbox.addWidget(self.server_ip,alignment=Qt.AlignmentFlag.AlignCenter)
         
         self.vbox.addWidget(self.space1)
-        
-
 
         self.hbox=QHBoxLayout()
         self.hbox.addWidget(self.exit)
@@ -183,11 +151,11 @@ class MainClientPage(QWidget,QColor):
         elif self.server_ip.text().count(".") < 3:
             report(self,text="Incomplete Server IP Address")
         else:
-            
+            name=os.environ['SUDO_USER']
             msg=QMessageBox(self)
             msg.setWindowTitle("Review Details")
             msg.setText("These details will be used to create the MPI cluster. Proceed?")
-            msg.setInformativeText(f"Name of user : {self.server_username.text()}\nServer IP Address : {self.server_ip.text()}")
+            msg.setInformativeText(f"Name of user : {name}\nServer IP Address : {self.server_ip.text()}")
     
             msg.setIcon(QMessageBox.Icon.Information)
             msg.setStandardButtons(QMessageBox.StandardButton.No|QMessageBox.StandardButton.Yes)
@@ -195,18 +163,28 @@ class MainClientPage(QWidget,QColor):
             if button==QMessageBox.StandardButton.Yes:
                 try:
                     info=self.server_ip.text()
-                    name=self.server_username.text()
+                    try:
+                        s.close()
+                    except:
+                        pass
                     send(info,name)
                     self.close()
-                    waste_time()
+                    time.sleep(3)
                     try:
                         work=subprocess.Popen("cd ..;cd ..;mkdir mpichdefault",shell=True,stderr=PIPE,stdout=PIPE)
                         stdout,stderr=work.communicate()[0]
                     except:
                         print("Overwriting directory with mpichdefault")
-                        subprocess.Popen(f"cd ..;cd ..;rm -r mpichdefault;mkdir mpichdefault;mount -t nfs {self.server_ip.text()}:home/{self.server_username.text()}/mpichdefault /home/{self.server_username.text()}/mpichdefault ",shell=True).communicate()[0]
-                    # subprocess.Popen(f"cd ..;cd ..;umount -f -l ~/mpichdefault ",shell=True).communicate()[0]
-                        print("Everything works")
+                        subprocess.Popen(f"cd ..;cd ..;rm -r mpichdefault;mkdir mpichdefault;mount -t nfs {self.server_ip.text()}:home/{name}/mpichdefault /home/{name}/mpichdefault ",shell=True).communicate()[0]
+                        time.sleep(2)
+                        try:
+                            s.close()
+                        except:
+                            pass
+                        check()
+                        if check:
+                          subprocess.Popen(f"cd ..;cd ..;umount -f -l /home/{name}/mpichdefault;rm -r mpichdefault;cd .ssh;rm authorized_keys;exit",shell=True).communicate()[0]
+                          print("Everything works")
                 except:
                     msg=QMessageBox(self)
                     msg.setIcon(QMessageBox.Icon.Critical)
@@ -228,15 +206,42 @@ if __name__ == "__main__":
     sys.exit(app.exec())
 
 def send(host,name):
-        # try:
+            global s
             s=socket.socket()
-            port=65014
+            port=65024
             s.connect((host,port))
             s.send(name.encode())
             print("sent")
             s.close()
-        # except Exception as e:
-        #     print(e)
-def waste_time():
-    for number in range(1,99999):
-        print("Working...please wait")
+      
+
+def check():
+        global info,s
+        try:
+            print
+            s=socket.socket()
+            port=65010
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            s.bind(("",port))
+            s.listen(5)
+            print("Server Started")
+            info=""
+            while len(info)==0:
+                c,addr=s.accept()
+                print("Message received")
+                content=c.recv(100).decode()
+                info=content
+                print(info)
+                c.close()
+            s.close()  
+          
+        except Exception as e:
+            print(e)
+            incomplete=QMessageBox()
+            incomplete.setWindowTitle("Broken Connection")
+            incomplete.setText("There seems to be a problem")
+            incomplete.setIcon(QMessageBox.Icon.Critical)
+            incomplete.setStandardButtons(QMessageBox.StandardButton.Ok)
+            incomplete.exec() 
+            s.close()
+        return True 
