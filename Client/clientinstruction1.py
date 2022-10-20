@@ -29,7 +29,7 @@ class MainClientPage(QWidget,QColor):
         if ip=="Disconnected":
             self.disconnected() 
 
-        self.setWindowTitle(f"Client PC : {self.pc_name}@{ip}")
+        self.setWindowTitle(f"Client PC : {ip}")
                              
         self.main_window()
 
@@ -69,31 +69,13 @@ class MainClientPage(QWidget,QColor):
         self.vbox.addStretch()
         self.vbox.setSpacing(0)
 
-        self.name_user=QLabel("Server Username")
-        self.name_user.setStyleSheet("margin-bottom: 5")
-        self.name_user.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
-        self.name_user.setProperty("class","label_cons")
 
         self.ip_server=QLabel("Server IP Address",self)
         self.ip_server.setStyleSheet("margin-bottom: 5")
         self.ip_server.setFont(QFont("Serif",12,QFont.Weight.ExtraLight))
         self.ip_server.setProperty("class","label_cons")
-
-
-        self.server_username=QLineEdit()
-        self.server_username.setFixedHeight(55)
-        self.server_username.setFixedWidth(650)
-        self.server_username.setProperty("class","server_input")
-        self.server_username.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
-        self.server_username.setPlaceholderText(" Username of the Server PC")
         
-        self.new_client_password=QLineEdit()
-        self.new_client_password.setFixedHeight(55)
-        self.new_client_password.setFixedWidth(650)
-        self.new_client_password.setProperty("class","server_input")
-        self.new_client_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
-        self.new_client_password.setPlaceholderText(" Password")
-        self.new_client_password.setEchoMode(QLineEdit.EchoMode.Password)
+       
 
         self.server_ip=QLineEdit()
         self.server_ip.setFixedHeight(55)
@@ -102,15 +84,6 @@ class MainClientPage(QWidget,QColor):
         self.server_ip.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
         self.server_ip.setPlaceholderText(" Server IP Address")
 
-
-        self.main_user_account_password=QLineEdit()
-        self.main_user_account_password.setFixedHeight(55)
-        self.main_user_account_password.setFixedWidth(650)
-        self.main_user_account_password.setProperty("class","server_input")
-        self.main_user_account_password.setStyleSheet("border: 1px solid rgb(123, 156, 222);\n border-radius:5px;\nmargin-bottom:15")
-        self.main_user_account_password.setPlaceholderText(" Main user account password")
-        self.main_user_account_password.setEchoMode(QLineEdit.EchoMode.Password)
-        
 
         ip_address="(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"
         regex_ip=QRegularExpression("^" + ip_address + "\\." + ip_address + "\\." + ip_address + "\\." + ip_address + "$")
@@ -133,15 +106,10 @@ class MainClientPage(QWidget,QColor):
         
         self.vbox.addWidget(self.fill_form)
         
-        self.vbox.addWidget(self.name_user)
-        self.vbox.addWidget(self.server_username,alignment=Qt.AlignmentFlag.AlignCenter)
-        
         self.vbox.addWidget(self.ip_server)
         self.vbox.addWidget(self.server_ip,alignment=Qt.AlignmentFlag.AlignCenter)
         
         self.vbox.addWidget(self.space1)
-        
-
 
         self.hbox=QHBoxLayout()
         self.hbox.addWidget(self.exit)
@@ -195,7 +163,7 @@ class MainClientPage(QWidget,QColor):
             if button==QMessageBox.StandardButton.Yes:
                 try:
                     info=self.server_ip.text()
-                    name=self.server_username.text()
+                    name=os.environ['SUDO_USER']
                     send(info,name)
                     self.close()
                     time.sleep(3)
