@@ -1,3 +1,6 @@
 openssh-server
 nfs-kernel-server
 mpich
+dbus-x11
+expect
+sshpass
