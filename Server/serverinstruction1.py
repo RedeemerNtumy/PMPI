@@ -10,6 +10,7 @@ from PyQt6.QtCore import Qt,QRegularExpression
 import socket
 import subprocess
 import time
+import pexpect
 
 
 class loading_screen(QWidget):
@@ -287,7 +288,6 @@ class MainServerPage(QWidget,QColor):
                     check()
                     if check:
                         self.close()
-                    
                         try:
                             with open("/etc/exports","a") as f:
                                 f.write(f"\n/home/{info}/mpichdefault *(rw,sync,no_root_squash,no_subtree_check)")
@@ -372,7 +372,7 @@ def check():
         try:
             print
             s=socket.socket()
-            port=65024
+            port=65030
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             s.bind(("",port))
             s.listen(5)
@@ -401,7 +401,7 @@ def check():
 def send(host):
             global s
             s=socket.socket()
-            port=65010
+            port=65040
             s.connect((host,port))
             s.send("Info".encode())
             print("sent")
