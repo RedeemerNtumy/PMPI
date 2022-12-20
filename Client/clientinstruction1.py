@@ -4,11 +4,9 @@ from PyQt6.QtWidgets import QApplication,QWidget,QPushButton,QVBoxLayout,QLineEd
 from PyQt6.QtGui import QColor,QRegularExpressionValidator,QGuiApplication,QFont
 import sys
 import socket
-from Server.serverinstruction1 import loading_screen
 import ServerorClient
 from PyQt6.QtCore import QRegularExpression,Qt
 from PyQt6.QtWidgets import QMessageBox
-import asyncio
 import subprocess
 import os
 import time
